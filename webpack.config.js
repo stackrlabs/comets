@@ -3,23 +3,23 @@ var webpack = require('webpack');
 var isProd = (process.env.NODE_ENV !== 'dev');
 
 function getPlugins() {
-    var plugins = [
-        new webpack.optimize.ModuleConcatenationPlugin(),
-        new webpack.DefinePlugin({
-            'process.env': {
-                'NODE_ENV': process.env.NODE_ENV
-            }
-        })
-    ];
+  var plugins = [
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': process.env.NODE_ENV
+      }
+    })
+  ];
 
-    return plugins;
+  return plugins;
 }
 
 const config = {
   mode: process.env.NODE_ENV !== 'dev' ? 'production' : 'development',
-  entry: './src/asteroids.ts',
+  entry: './game/asteroids.ts',
   optimization: {
-      minimize: false
+    minimize: false
   },
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -39,7 +39,7 @@ const config = {
 };
 
 if (isProd) {
-    config.optimization.minimize = true;
+  config.optimization.minimize = true;
 }
 
 module.exports = config;

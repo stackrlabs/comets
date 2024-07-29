@@ -26,6 +26,8 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
+    "@stackr/sdk": "^0.5.1",
+    "dotenv": "^16.4.5",
     "hammerjs": "^2.0.8",
     "howler": "^2.2.3"
   }
