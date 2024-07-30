@@ -1,4 +1,4 @@
-import screen from './screen';
+import screen, {WIDTH, HEIGHT, OBJECT_SCALE} from './screen';
 import { Key } from './keys';
 import { Object2D } from './object2d';
 import { Vector } from './vector';
@@ -7,13 +7,13 @@ import { fire, thrust } from './sounds';
 import { random } from './util';
 
 const ACCELERATION: number = 0.1;
-const BULLET_SPEED: number = 1000 * screen.objectScale;
+const BULLET_SPEED: number = 1000 * OBJECT_SCALE;
 const BULLET_TIME: number = .1;
 const FRICTION: number = 0.005;
 const ROTATION: number = 5;
-const MAX_ACCELERATION: number = 1100 * screen.objectScale;
+const MAX_ACCELERATION: number = 1100 * OBJECT_SCALE;
 const MAX_BULLETS: number = 10;
-const VELOCITY = 150 * screen.objectScale;
+const VELOCITY = 150 * OBJECT_SCALE;
 
 class Flame extends Object2D {
 
@@ -77,38 +77,38 @@ export class Ship extends Object2D {
         }
     }
 
-    update(dt: number) {
+    update(dt: number, inputs?: VirtualInputs) {
         this.move(dt);
         this.flame.move(dt);
 
-        if (Key.isThrust()) {
+        if (inputs.isThrust) {
             this.moving = true;
             this.thrust();
         } else {
             this.moving = false;
         }
 
-        if (Key.wasRotateLeft) {
+        if (inputs.wasRotateLeft) {
             this.rotate(-1);
         } 
 
-        if (Key.isRotateLeft()) {
+        if (inputs.isRotateLeft) {
             this.rotate(-ROTATION);
         } 
 
-        if (Key.wasRotateRight) {
+        if (inputs.wasRotateRight) {
             this.rotate(1);
         }
 
-        if (Key.isRotateRight()) {
+        if (inputs.isRotateRight) {
             this.rotate(ROTATION);
         } 
 
-        if (Key.isFire()) {
+        if (inputs.isFire) {
             this.fire();
         }
 
-        if (Key.wasHyperspace()) {
+        if (inputs.wasHyperspace) {
             this.hyperspace(); 
         }
 
@@ -194,8 +194,8 @@ export class Ship extends Object2D {
     }
 
     hyperspace() {
-        let x = random(40, screen.width - 40);
-        let y = random(40, screen.height - 40);
+        let x = random(40, WIDTH - 40);
+        let y = random(40, HEIGHT - 40);
         
         this.velocity = new Vector(0, 0);
         this.flame.velocity = this.velocity;

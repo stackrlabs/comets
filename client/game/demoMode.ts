@@ -17,7 +17,7 @@ export class DemoMode implements IGameState {
         }
     }
 
-    update(dt) {
+    update(dt, inputs?: VirtualInputs) {
         this.checkCollisions();
 
         this.world.updateAlienTimer(dt);
@@ -28,7 +28,7 @@ export class DemoMode implements IGameState {
 
         this.updatePushStartTimer(dt);
         
-        this.world.update(dt);
+        this.world.update(dt, inputs);
     }
 
     updatePushStartTimer(dt: number) {

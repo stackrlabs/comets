@@ -1,4 +1,4 @@
-import screen from './screen';
+import screen, {WIDTH, HEIGHT, OBJECT_SCALE} from './screen';
 import { random } from './util';
 import { Object2D } from './object2d';
 import { Ship } from './ship';
@@ -26,13 +26,13 @@ export abstract class Alien extends Object2D {
 
         this.velocity.y = 0;
 
-        this.origin.y = random(100, screen.height - 100);
+        this.origin.y = random(100, HEIGHT - 100);
         
         if (this.origin.y % 2 === 0) {
             this.origin.x = 40;
             this.velocity.x = speed;
         } else {
-            this.origin.x = screen.width - 40;
+            this.origin.x = WIDTH - 40;
             this.velocity.x = -speed;
         }
 
@@ -51,7 +51,7 @@ export abstract class Alien extends Object2D {
     update(dt: number) {
         this.move(dt);
         
-        if (this.origin.x >= screen.width - 5 || this.origin.x <= 5) {
+        if (this.origin.x >= WIDTH - 5 || this.origin.x <= 5) {
             this.trigger('expired');
             return;
         }

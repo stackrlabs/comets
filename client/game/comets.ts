@@ -27,11 +27,12 @@ export class Asteroids {
       this.lastScore
     );
     this.currentMode = this.attractMode;
+    this.tickRecorder = new TickRecorder();
 
     const setGameMode = () => {
       this.gameMode = new GameMode(new World(Highscores.top.score));
       this.currentMode = this.gameMode;
-      this.tickRecorder = new TickRecorder();
+      this.tickRecorder.reset();
 
       this.gameMode.on("done", (source, world) => {
         // Send ticks in the form of an action to MRU
@@ -85,12 +86,14 @@ export class Asteroids {
       return;
     }
 
+    var gameInputs = this.tickRecorder.collectInputs();
+
     // We only record ticks in game mode
     if (this.currentMode === this.gameMode) {
-      this.tickRecorder.collectInputs();
+      this.tickRecorder.recordInputs(gameInputs);
     }
 
-    this.currentMode.update(dt);
+    this.currentMode.update(dt, gameInputs);
   }
 
   render(dt) {
