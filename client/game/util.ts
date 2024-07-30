@@ -1,7 +1,10 @@
+// We use a fixed seed for deterministic behavior
+const SEED = 0.69;
+
 export function random(start: number, end: number): number {
-     return Math.floor(Math.random() * (end - start + 1)) + start;
+     return Math.floor(SEED * (end - start + 1)) + start;
 }
 
 export function randomFloat(start: number, end: number): number {
-    return Math.random() * (end - start) + start;
+    return SEED * (end - start) + start;
 }
