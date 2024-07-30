@@ -1,7 +1,8 @@
-import screen from './screen';
+import { WIDTH, HEIGHT } from './screen';
 import { Quadtree } from './quadtree';
 import { Object2D } from './object2d';
 import { lineclip } from './lineclip';
+import { Point } from '../comets';
 
 export type CollisionCallback<TSource, TTarget> = (a: TSource, b: TTarget) => void;
 export type BulletCollisionCallback<TSource, TTarget> = (a: TSource, b: TSource, c: TTarget) => void;
@@ -14,8 +15,8 @@ export class Collisions {
         this.tree = new Quadtree({
             x: 0, 
             y: 0, 
-            width: screen.width, 
-            height: screen.height
+            width: WIDTH, 
+            height: HEIGHT
         });
     }
 

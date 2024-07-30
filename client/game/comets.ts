@@ -8,6 +8,8 @@ import { InitialsMode } from "./initialsMode";
 import { GameMode } from "./gameMode";
 import Global from "./global";
 import { TickRecorder } from "./tickRecorder";
+import { IGameState } from "../comets";
+import { Screen } from "./screen";
 
 export class Asteroids {
   private lastScore = 0;
@@ -16,6 +18,7 @@ export class Asteroids {
   private initialsMode: InitialsMode;
   private currentMode: IGameState;
   private tickRecorder: TickRecorder;
+  private screen: Screen;
 
   constructor() {
     this.init();
@@ -26,6 +29,7 @@ export class Asteroids {
       new World(Highscores.top.score),
       this.lastScore
     );
+    this.screen = new Screen();
     this.currentMode = this.attractMode;
     this.tickRecorder = new TickRecorder();
 
@@ -97,7 +101,7 @@ export class Asteroids {
   }
 
   render(dt) {
-    this.currentMode.render(dt);
+    this.currentMode.render(this.screen, dt);
     Key.update();
   }
 }

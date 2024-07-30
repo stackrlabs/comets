@@ -1,3 +1,5 @@
+import { Rect, IQuadtree } from '../comets';
+
 export class Quadtree implements IQuadtree {
 
     nodes: Quadtree[];

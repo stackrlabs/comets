@@ -2,7 +2,8 @@ import { Sound } from './sounds';
 import { EventSource } from './events';
 import { Object2D } from './object2d';
 import { Collisions } from './collisions';
-import screen from './screen';
+import { Screen, WIDTH, HEIGHT } from './screen';
+import { VirtualInputs, IGameState, Rect } from '../comets';
 import { World } from './world';
 import { Thumper } from './thump';
 import Global from './global';
@@ -20,7 +21,7 @@ export class GameMode extends EventSource implements IGameState {
 
     init() {
         Sound.on();
-        this.world.addShip(screen.width2, screen.height2);
+        this.world.addShip(WIDTH/2, HEIGHT/2);
         this.world.startLevel();
         this.thumper = new Thumper();
     }
@@ -79,17 +80,17 @@ export class GameMode extends EventSource implements IGameState {
         this.world.update(dt, inputs);
     }
 
-    render(delta: number) {
+    render(screen: Screen, delta: number) {
         if (Global.paused) {
             return;
         }
         
-        this.renderStatic();
+        this.renderStatic(screen);
 
-        this.world.render(delta);
+        this.world.render(screen, delta);
     }
 
-    private renderStatic() {
+    private renderStatic(screen: Screen) {
         screen.draw.background();
         screen.draw.copyright();
         screen.draw.scorePlayer1(this.world.score);
@@ -113,7 +114,7 @@ export class GameMode extends EventSource implements IGameState {
 
         // debug stuff
         if (Global.debug) {
-            this.renderDebug();
+            this.renderDebug(screen);
         }
 
         if (Global.god) {
@@ -123,7 +124,7 @@ export class GameMode extends EventSource implements IGameState {
         }
     }
 
-    private renderDebug() {
+    private renderDebug(screen: Screen) {
         
         screen.draw.text2('debug mode', screen.font.small, (width) => {
             return { x: screen.width - width - 10, y: screen.height - 40 };

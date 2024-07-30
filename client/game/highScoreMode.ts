@@ -1,5 +1,6 @@
-import screen from './screen';
+import { Screen } from './screen';
 import { Highscores } from './highscores';
+import { IGameState } from '../comets';
 
 export class HighScoreMode implements IGameState {
 
@@ -20,13 +21,13 @@ export class HighScoreMode implements IGameState {
         }
     }
 
-    render(delta: number) {
-        this.drawBackground();
-        this.drawPushStart();
-        this.drawHighScores();
+    render(screen: Screen, delta: number) {
+        this.drawBackground(screen);
+        this.drawPushStart(screen);
+        this.drawHighScores(screen);
     }
 
-    private drawBackground() {
+    private drawBackground(screen: Screen) {
         screen.draw.background();
         screen.draw.scorePlayer1(this.score);
         screen.draw.oneCoinOnePlay();
@@ -34,7 +35,7 @@ export class HighScoreMode implements IGameState {
         screen.draw.copyright();
     }
 
-    private drawHighScores() {
+    private drawHighScores(screen: Screen) {
         const screenX = screen.width / 2;
         const startY = Math.ceil(screen.height / 4.5) + (screen.font.xlarge + screen.font.small);
         const spacing = screen.font.medium + screen.font.small;
@@ -59,7 +60,7 @@ export class HighScoreMode implements IGameState {
         }
     }
 
-    private drawPushStart() {
+    private drawPushStart(screen: Screen) {
         if (this.showPushStart) {
             screen.draw.pushStart();
         }

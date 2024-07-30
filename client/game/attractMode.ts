@@ -5,6 +5,8 @@ import { DemoMode } from './demoMode';
 import { Highscores } from './highscores';
 import { Sound } from './sounds';
 import { Key } from './keys';
+import { IGameState } from '../comets';
+import { Screen } from './screen';
 
 const ATTRACT_TIME = 15;
 
@@ -39,8 +41,8 @@ export class AttractMode extends EventSource implements IGameState {
         }
     }
     
-    render(dt?: number) {
-        this.currentMode.render(dt);
+    render(screen: Screen, dt?: number) {
+        this.currentMode.render(screen, dt);
     }
 
     updateAttractTimer(step: number) {

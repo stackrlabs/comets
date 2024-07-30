@@ -1,6 +1,7 @@
-import screen from './screen';
+import { Screen, OBJECT_SCALE } from './screen';
 import { Vector } from './vector';
 import { Object2D } from './object2d';
+import { Point } from '../comets';
 
 export class Bullet extends Object2D { 
 
@@ -11,8 +12,8 @@ export class Bullet extends Object2D {
         this.velocity = v;
     }
 
-    render() {
-        this.draw();   
+    render(screen: Screen) {
+        this.draw(screen);   
     }
 
     update(dt: number) {
@@ -25,8 +26,8 @@ export class Bullet extends Object2D {
         }
     }
 
-    draw() {
-        let size = this.frame <= 1 ? 8 * screen.objectScale : 4 * screen.objectScale;
+    draw(screen: Screen) {
+        let size = this.frame <= 1 ? 8 * OBJECT_SCALE : 4 * OBJECT_SCALE;
         screen.draw.rect(this.origin.x - 2, this.origin.y - 2, size, size, `rgba(255,0,255,.5)`);
         screen.draw.rect(this.origin.x - 1, this.origin.y - 1, size, size, `rgba(0,255,255,.5)`);
         screen.draw.rect(this.origin.x, this.origin.y, size, size);

@@ -1,6 +1,6 @@
 import { EventSource } from './events';
 import { Key } from './keys';
-import screen from './screen';
+import { Screen } from './screen';
 import { Object2D } from './object2d';
 import { Rock } from './rocks';
 import { Vector } from './vector';
@@ -32,7 +32,7 @@ export class Shockwave extends Object2D {
         }
     }
 
-    render(dt?: number) {
+    render(screen: Screen, dt?: number) {
         if (this.frame === 1) {
             const radius = (this.size * (random(25,55))) / 10;
             const { ctx } = screen;

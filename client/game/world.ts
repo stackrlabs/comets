@@ -10,8 +10,9 @@ import { ScoreMarker } from './scoreMarker';
 import { SlowMoTimer } from './slowMoTimer';
 import { Object2D } from './object2d';
 import { random } from './util';
-import screen from './screen';
 import { smallAlien, largeAlien, alienFire, largeExplosion, extraLife, getPowerup } from './sounds';
+import { VirtualInputs, IGameState, Rect } from '../comets';
+import { Screen, WIDTH, HEIGHT, SHIP_RECT } from './screen';
 
 const EXTRA_LIFE = 10000;
 const SHAKE_TIME = .5;
@@ -86,7 +87,7 @@ export class World {
         });
     }
     
-    render(dt?: number) {
+    render(screen: Screen, dt?: number) {
         if (this.slowMoTimer) {
             dt = this.slowMoTimer.adjust(dt);
         }
@@ -97,7 +98,7 @@ export class World {
 
         this.objects.forEach(obj => {
             if (obj) {
-                obj.render(dt);
+                obj.render(screen, dt);
             }
         });
 
@@ -344,7 +345,7 @@ export class World {
             return;
         }
 
-        let rect: Rect = screen.shipRect;
+        let rect: Rect = SHIP_RECT;
 
         let collided = false;
 
@@ -358,7 +359,7 @@ export class World {
 
         if (!collided) {
             this.shipTimer = 0;
-            this.addShip(screen.width2, screen.height2);
+            this.addShip(WIDTH/2, HEIGHT/2);
         }
 
     }

@@ -1,3 +1,5 @@
+import { Point } from '../comets';
+
 const VECTOR = {};
 const PI2 = 2 * Math.PI;
 

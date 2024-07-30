@@ -1,4 +1,4 @@
-import screen from './screen';
+import { Screen, WIDTH, HEIGHT } from './screen';
 import { white } from './draw';
 import { Object2D } from './object2d';
 import { Vector } from './vector';
@@ -6,13 +6,13 @@ import { Vector } from './vector';
 export class Achievement extends Object2D { 
 
     life: number = 1;   // in seconds
-    fontSize: number = screen.font.xlarge * 2;
+    fontSize: number;
     
-    heightText: number = screen.height / 4;
-    heightScore: number = screen.height / 6;
+    heightText: number = HEIGHT / 4;
+    heightScore: number = HEIGHT / 6;
 
     constructor(private text: string, score: number) {
-        super(screen.width2, screen.height2);
+        super(WIDTH / 2, HEIGHT / 2);
         this.score = score;
         //this.velocity = new Vector(0, -1);
     }
@@ -26,7 +26,8 @@ export class Achievement extends Object2D {
         }
     }
 
-    render() {
+    render(screen: Screen) {
+        this.fontSize = screen.font.xlarge * 2;
 
         screen.draw.text3(this.text, this.fontSize, (width) => {
             return {

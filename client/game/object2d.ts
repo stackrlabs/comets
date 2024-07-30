@@ -1,4 +1,5 @@
-import screen, {WIDTH, HEIGHT, OBJECT_SCALE} from './screen';
+import {Screen, WIDTH, HEIGHT, OBJECT_SCALE} from './screen';
+import {IGameState, Rect, Point} from '../comets';
 import { EventSource } from './events';
 import { COS, SIN } from './lut';
 import { Vector } from './vector';
@@ -19,7 +20,7 @@ export abstract class Object2D extends EventSource implements Rect, IGameState {
     protected _score: number = 0;
 
     abstract update(dt?: number) : void;
-    abstract render(dt?: number) : void;
+    abstract render(screen: Screen, dt?: number) : void;
     
     get score(): number {
         return this._score;
@@ -113,7 +114,7 @@ export abstract class Object2D extends EventSource implements Rect, IGameState {
         this.calcBounds();
     }
 
-    draw(closed: boolean = true, color = 'rgba(255,255,255,.8)') {
+    draw(screen: Screen, closed: boolean = true, color = 'rgba(255,255,255,.8)') {
         screen.draw.vectorShape(this.points, this.origin.x, this.origin.y, color, closed);
     }
 
