@@ -1,11 +1,11 @@
 import { ActionSchema, AllowedInputTypes, MicroRollup } from "@stackr/sdk";
 import { HDNodeWallet, Wallet } from "ethers";
+import { readFileSync } from "fs";
 import { stackrConfig } from "./stackr.config";
-import { ValidateGameSchema } from "./stackr/action";
+import { CreateGameSchema, ValidateGameSchema } from "./stackr/action";
 import { machine } from "./stackr/machine";
-import { ValidateGameInput } from "./stackr/transitions";
 
-const wallet = Wallet.createRandom();
+const wallet = new Wallet(stackrConfig.operator.accounts[0].privateKey);
 
 const signMessage = async (
   wallet: HDNodeWallet,
@@ -23,31 +23,30 @@ const signMessage = async (
 const main = async () => {
   const mru = await MicroRollup({
     config: stackrConfig,
-    actionSchemas: [ValidateGameSchema],
+    actionSchemas: [CreateGameSchema, ValidateGameSchema],
     stateMachines: [machine],
+    stfSchemaMap: {
+      createGame: CreateGameSchema,
+      validateGame: ValidateGameSchema,
+    },
   });
 
   await mru.init();
 
-  const filePath = './ticks2.json';
-  const fs = require('fs').promises;
-
+  const filePath = "./ticks.json";
   let jsonData;
-
   try {
-    const data = await fs.readFile(filePath, 'utf8');
+    const data = readFileSync(filePath, "utf8");
     jsonData = JSON.parse(data);
   } catch (error) {
-    console.error('Error reading or parsing the file:', error);
+    console.error("Error reading or parsing the file:", error);
     return null;
   }
 
-  console.log("Found", jsonData.length, "ticks")
-
+  console.log("Found", jsonData.keypresses.length, "ticks");
   const inputs = {
     gameId: 1,
-    timestamp: 1,
-    inputs: jsonData,
+    ...jsonData,
   };
 
   const signature = await signMessage(wallet, ValidateGameSchema, inputs);
@@ -58,7 +57,7 @@ const main = async () => {
   });
 
   const ack = await mru.submitAction("validateGame", incrementAction);
-  console.log(ack);
+  // console.log(ack);
 };
 
 main();
