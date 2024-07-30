@@ -1,5 +1,5 @@
-import screen, {WIDTH, HEIGHT, OBJECT_SCALE} from './screen';
-import { Key } from './keys';
+import {Screen, WIDTH, HEIGHT, OBJECT_SCALE} from './screen';
+import { VirtualInputs } from '../comets';
 import { Object2D } from './object2d';
 import { Vector } from './vector';
 import { Bullet } from './bullet';
@@ -31,8 +31,8 @@ class Flame extends Object2D {
 
     }
 
-    render() {
-        this.draw(false);
+    render(screen: Screen) {
+        this.draw(screen, false);
     }
 }
 
@@ -59,11 +59,11 @@ export class Ship extends Object2D {
         this.angle = 270;
     }
 
-    render() {
-        this.draw();
+    render(screen: Screen) {
+        this.draw(screen);
         
         if (this.moving && random(1,10) % 2 === 0) {
-            this.flame.draw(false);
+            this.flame.draw(screen, false);
         }
 
         if (this.trails.length) {

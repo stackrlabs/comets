@@ -1,7 +1,8 @@
-import screen from './screen';
+import { Screen } from './screen';
 import { Ship } from './ship';
 import { random } from './util';
 import Global from './global';
+import { Point, Rect, IQuadtree } from '../comets';
 
 const VectorLine = 'rgba(255,255,255,.8)';
 const TextColor = 'rgba(255,255,255,.8)';
@@ -27,10 +28,10 @@ const magenta5 = magenta(.5);
 const cyan5 = cyan(.5);
 
 export class Draw {
+    screen: Screen;
 
-
-    constructor(private ctx: CanvasRenderingContext2D) {
-
+    constructor(private ctx: CanvasRenderingContext2D, screen: Screen) {
+        this.screen = screen;
     }
 
     line(x1: number, y1: number, x2: number, y2: number, color: string = VectorLine, width: number = DefaultLineWidth) {
@@ -104,13 +105,13 @@ export class Draw {
     }
 
     point(p: Point, fillStyle: string = VectorLine) {
-        this.rect(p.x, p.y, screen.pointSize, screen.pointSize, fillStyle);
+        this.rect(p.x, p.y, this.screen.pointSize, this.screen.pointSize, fillStyle);
     }
 
     background(color: string = BACKGROUND_COLOR) {
         const { ctx } = this;
         ctx.fillStyle = color;
-        ctx.fillRect(0, 0, screen.width, screen.height);
+        ctx.fillRect(0, 0, this.screen.width, this.screen.height);
     }
 
     scanlines() {
@@ -121,23 +122,23 @@ export class Draw {
         const { ctx } = this;
         const step = random(2,5);
 
-        for(let i = 0; i < screen.height - step; i+=step) {
+        for(let i = 0; i < this.screen.height - step; i+=step) {
             ctx.beginPath();
             
             ctx.lineWidth = 1;
             ctx.moveTo(0, i);
             ctx.strokeStyle = '#001111';
-            ctx.lineTo(screen.width, i);
+            ctx.lineTo(this.screen.width, i);
             ctx.stroke();
 
             ctx.moveTo(0, i + 1);
             ctx.strokeStyle = 'rgba(255,0,255,.5)';
-            ctx.lineTo(screen.width, i + 1);
+            ctx.lineTo(this.screen.width, i + 1);
             ctx.stroke();
 
             ctx.moveTo(0, i + 2);
             ctx.strokeStyle = 'rgba(0,255,255,.3)';
-            ctx.lineTo(screen.width, i + 2);
+            ctx.lineTo(this.screen.width, i + 2);
             ctx.stroke();
 
             ctx.closePath();
@@ -241,7 +242,7 @@ export class Draw {
         while (text.length < 2) { 
             text = '0' + text 
         };
-        this.text(text, X_START, Y_START, screen.font.medium);
+        this.text(text, X_START, Y_START, this.screen.font.medium);
     }
 
     highscore(score: number) {
@@ -251,55 +252,55 @@ export class Draw {
             text = '0' + text;
         }
 
-        this.text2(text, screen.font.small, (width) => {
+        this.text2(text, this.screen.font.small, (width) => {
             return {
-                x: screen.width2 - (width / 2),
+                x: this.screen.width2 - (width / 2),
                 y: Y_START
             }
         });
     }
 
     oneCoinOnePlay() {
-        this.text2('1  coin  1  play', screen.font.medium, (width) => {
+        this.text2('1  coin  1  play', this.screen.font.medium, (width) => {
             return {
-                x: screen.width2 - (width / 2),
-                y: (screen.height / 8) * 7
+                x: this.screen.width2 - (width / 2),
+                y: (this.screen.height / 8) * 7
             }
         });
     }
 
     pushStart() {
-        screen.draw.text3('push start', screen.font.xlarge, (width) => {
+        this.screen.draw.text3('push start', this.screen.font.xlarge, (width) => {
             return {
-                x: screen.width2 - (width / 2),
-                y: screen.height / 8
+                x: this.screen.width2 - (width / 2),
+                y: this.screen.height / 8
             }
         });
     }
 
     player1() {
-        screen.draw.text3('player 1', screen.font.xlarge, (width) => {
+        this.screen.draw.text3('player 1', this.screen.font.xlarge, (width) => {
             return {
-                x: screen.width2 - (width / 2),
+                x: this.screen.width2 - (width / 2),
                 y: screen.height / 4.5
             }
         });
     }
 
     gameOver() {
-        screen.draw.text3('game over', screen.font.xlarge, (width) => {
+        this.screen.draw.text3('game over', this.screen.font.xlarge, (width) => {
             return {
-                x: screen.width2 - (width / 2),
+                x: this.screen.width2 - (width / 2),
                 y: screen.height / 4.5
             }
         });
     }
 
     copyright() {
-        this.text2(CR + ' 1979 atari inc', screen.font.small, (width) => {
+        this.text2(CR + ' 1979 atari inc', this.screen.font.small, (width) => {
             return {
-                x: screen.width2 - (width / 2),
-                y: screen.height - screen.font.small
+                x: this.screen.width2 - (width / 2),
+                y: this.screen.height - this.screen.font.small
             }
         });
     }
@@ -309,12 +310,12 @@ export class Draw {
         const life = new Ship(0, 0);
         const loc = (life.x + life.width) * 2.3;
         
-        const y = Y_START + screen.font.medium + 10;
+        const y = Y_START + this.screen.font.medium + 10;
 
         for(let i = 0; i < lives; i++) {
             life.origin.x = 80 + (i * loc);
             life.origin.y = y;
-            life.render();
+            life.render(this.screen);
         }
     }
 

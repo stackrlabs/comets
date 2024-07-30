@@ -1,6 +1,7 @@
-import screen from './screen';
+import { Screen } from './screen';
 import { Collisions } from './collisions';
 import { World } from './world';
+import { IGameState, VirtualInputs } from '../comets';
 
 export class DemoMode implements IGameState {
 
@@ -63,13 +64,13 @@ export class DemoMode implements IGameState {
         });
     }
 
-    render(delta?: number) {
-        this.drawBackground();
-        this.drawPushStart();
-        this.world.render(delta);
+    render(screen: Screen, delta?: number) {
+        this.drawBackground(screen);
+        this.drawPushStart(screen);
+        this.world.render(screen, delta);
     }
 
-    private drawBackground() {
+    private drawBackground(screen: Screen) {
         screen.draw.background();
         screen.draw.scorePlayer1(this.world.score);
         screen.draw.oneCoinOnePlay();
@@ -77,7 +78,7 @@ export class DemoMode implements IGameState {
         screen.draw.copyright();
     }
 
-    private drawPushStart() {
+    private drawPushStart(screen: Screen) {
         if (this.showPushStart) {
             screen.draw.pushStart();
         }

@@ -1,5 +1,6 @@
-import screen from './screen';
+import { Screen } from './screen';
 import { EventSource } from './events';
+import { IGameState } from '../comets';
 
 export class Flash extends EventSource implements IGameState { 
 
@@ -7,8 +8,8 @@ export class Flash extends EventSource implements IGameState {
         super();
     }
 
-    render() {
-        this.draw();   
+    render(screen: Screen) {
+        this.draw(screen);   
     }
 
     update(dt: number) {
@@ -18,7 +19,7 @@ export class Flash extends EventSource implements IGameState {
         }
     }
 
-    draw() {
+    draw(screen: Screen) {
         screen.draw.background('#ffffff');
         screen.draw.scanlines();
     }

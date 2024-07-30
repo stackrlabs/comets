@@ -1,8 +1,16 @@
 import { Draw } from './draw';
+import { Rect } from '../comets';
 
 export const WIDTH: number = 960;
 export const HEIGHT: number = 720;
 export const OBJECT_SCALE: number = .75;
+export const OFF_RECT: number = 120 * OBJECT_SCALE;
+export const SHIP_RECT: Rect = {
+    x: WIDTH / 2 - OFF_RECT,
+    y: HEIGHT / 2 - OFF_RECT,
+    width: OFF_RECT * 2,
+    height: OFF_RECT * 2
+}
 
 export class Screen implements Rect {
 
@@ -27,7 +35,7 @@ export class Screen implements Rect {
     constructor() {
         this.canvas = document.getElementById('canvas') as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d');
-        this.draw = new Draw(this.ctx);
+        this.draw = new Draw(this.ctx, this);
         this.init();
 
         window.addEventListener('resize', () => {
@@ -51,14 +59,7 @@ export class Screen implements Rect {
 
         this._pointSize = 4 * this._objectScale;
 
-        const offRect = (120 * this._objectScale);
-
-        this._shipRect = {
-            x: this.width2 - offRect,
-            y: this.height2 - offRect,
-            width: offRect * 2,
-            height: offRect * 2
-        }
+        this._shipRect = SHIP_RECT;
     }
 
     get font() {
@@ -103,4 +104,3 @@ export class Screen implements Rect {
     }
 }
 
-export default new Screen();

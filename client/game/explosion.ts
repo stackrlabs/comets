@@ -1,12 +1,12 @@
 import { EventSource } from './events';
 import { Key } from './keys';
-import screen from './screen';
+import { OBJECT_SCALE, Screen } from './screen';
 import { Object2D } from './object2d';
 import { Vector } from './vector';
 import { random } from './util';
 import { SIN, COS } from './lut';
 
-const VELOCITY = 300 * screen.objectScale;
+const VELOCITY = 300 * OBJECT_SCALE;
 
 // general, garden variety explosion
 export class Explosion extends EventSource {
@@ -37,7 +37,7 @@ export class Explosion extends EventSource {
         }
     }
 
-    render(dt?: number) {
+    render(screen: Screen, dt?: number) {
         this.points.forEach(p => {
             if (random(1,10) % 2 === 0) {
                 screen.draw.rect(p.x, p.y, 2, 2, `rgba(255,255,255,${p.alpha})`);

@@ -1,4 +1,4 @@
-import screen from './screen';
+import { Screen, OBJECT_SCALE } from './screen';
 import { Object2D } from './object2d';
 import { Vector } from './vector';
 import { random, randomFloat } from './util';
@@ -65,7 +65,7 @@ export class Rock extends Object2D {
     constructor(x: number, y: number, v: Vector, size: RockSize, speed: number = 1) {
         super(x, y);
         
-        const velocity = speed * screen.objectScale;
+        const velocity = speed * OBJECT_SCALE;
 
         this.velocity.x = v.x * velocity;
         this.velocity.y = v.y * velocity;
@@ -96,8 +96,8 @@ export class Rock extends Object2D {
         }
     }
 
-    render() {
-        this.draw();
+    render(screen: Screen) {
+        this.draw(screen);
     }
 
     get direction() {

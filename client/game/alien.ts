@@ -1,14 +1,14 @@
-import screen, {WIDTH, HEIGHT, OBJECT_SCALE} from './screen';
+import {Screen, WIDTH, HEIGHT, OBJECT_SCALE} from './screen';
 import { random } from './util';
 import { Object2D } from './object2d';
 import { Ship } from './ship';
 import { Bullet } from './bullet';
 import { Vector } from './vector';
 
-const BIG_ALIEN_BULLET_SPEED: number = 600 * screen.objectScale;
-const SMALL_ALIEN_BULLET_SPEED: number = 800 * screen.objectScale;
-const BIG_ALIEN_SPEED: number = 225 * screen.objectScale;
-const SMALL_ALIEN_SPEED: number = 250 * screen.objectScale;
+const BIG_ALIEN_BULLET_SPEED: number = 600 * OBJECT_SCALE;
+const SMALL_ALIEN_BULLET_SPEED: number = 800 * OBJECT_SCALE;
+const BIG_ALIEN_SPEED: number = 225 * OBJECT_SCALE;
+const SMALL_ALIEN_SPEED: number = 250 * OBJECT_SCALE;
 
 
 export abstract class Alien extends Object2D {
@@ -84,12 +84,12 @@ export abstract class Alien extends Object2D {
 
     }
 
-    render() {
-        this.draw();
+    render(screen: Screen) {
+        this.draw(screen);
     }
-    
-    draw() {
-        super.draw();
+
+    draw(screen: Screen) {
+        super.draw(screen);
         screen.draw.vectorShape([this.points[1], this.points[6]], this.origin.x, this.origin.y);
         screen.draw.vectorShape([this.points[2], this.points[5]], this.origin.x, this.origin.y);
     }

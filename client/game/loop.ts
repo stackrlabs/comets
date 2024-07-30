@@ -1,3 +1,6 @@
+import { Asteroids } from './comets';
+import { Screen } from './screen';
+
 const timestamp = () => {
     return window.performance && window.performance.now ? window.performance.now() : new Date().getTime();
 }
@@ -9,8 +12,7 @@ let last = timestamp();
 const DT = 1/60;
 const ONE_SECOND = 1000;
 
-const init = (state: IGameState) => {
-
+const init = (state: Asteroids) => {
     const frame = () => {
         now = timestamp();
         delta += Math.min(1, (now - last) / ONE_SECOND);
@@ -31,7 +33,7 @@ const init = (state: IGameState) => {
     frame();
 }
 
-export const loop = (state: IGameState) => {
+export const loop = (state: Asteroids) => {
     init(state);
 }
 

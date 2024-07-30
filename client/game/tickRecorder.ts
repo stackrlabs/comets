@@ -1,4 +1,5 @@
 import { Key } from './keys';
+import { VirtualInputs } from '../comets';
 
 export class TickRecorder {
     public ticks: VirtualInputs[] = [];

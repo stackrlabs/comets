@@ -1,4 +1,4 @@
-import screen from './screen';
+import { Screen } from './screen';
 import { white } from './draw';
 import { Object2D } from './object2d';
 
@@ -11,7 +11,7 @@ export class ScoreMarker extends Object2D {
         this.velocity = obj.velocity;
     }
 
-    render() {
+    render(screen: Screen) {
         screen.draw.text(this.text, this.origin.x, this.origin.y, this.life * 50, white(this.life));   
     }
 
