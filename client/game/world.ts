@@ -214,7 +214,7 @@ export class World {
 
     shipDestroyed() {
         if (this.ship) {
-            largeExplosion.play();
+            // largeExplosion.play();
             this.createExplosion(this.ship);
             this.addFlash(5);
             this.ship.destroy();
@@ -288,19 +288,19 @@ export class World {
             this.alien = new BigAlien();
         }
 
-        alienSound.play();
+        // alienSound.play();
         
         this.alien.on('expired', () => {
-            alienFire.stop();
-            alienSound.stop();
-            largeExplosion.play();
+            // alienFire.stop();
+            // alienSound.stop();
+            // largeExplosion.play();
             this.alien = null;
             this.alienBullets.forEach(b => b.destroy());
             this.alienBullets.length = 0; 
         });
 
         this.alien.on('fire', (alien, bullet: Bullet) => {
-            alienFire.play();
+            // alienFire.play();
             
             bullet.on('expired', () => {
                 this.alienBullets = this.alienBullets.filter(x => x !== bullet);
@@ -322,14 +322,14 @@ export class World {
         if (this.extraLifeScore >= EXTRA_LIFE) {
             this.lives++;
             this.extraLifeScore -= EXTRA_LIFE;
-            extraLife.play();
+            // extraLife.play();
         }
 
         this.addScenery(new ScoreMarker(obj, `${obj.score}`));
     }
 
     addPowerup() {
-        getPowerup.play();
+        // getPowerup.play();
     }
 
     shake() {

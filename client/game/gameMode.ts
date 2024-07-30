@@ -20,7 +20,6 @@ export class GameMode extends EventSource implements IGameState {
     }
 
     init() {
-        Sound.on();
         this.world.addShip(WIDTH/2, HEIGHT/2);
         this.world.startLevel();
         this.thumper = new Thumper();

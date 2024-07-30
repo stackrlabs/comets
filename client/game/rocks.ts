@@ -1,4 +1,4 @@
-import { Screen, OBJECT_SCALE } from './screen';
+import { Screen, OBJECT_SCALE, WIDTH, HEIGHT } from './screen';
 import { Object2D } from './object2d';
 import { Vector } from './vector';
 import { random, randomFloat } from './util';
@@ -124,9 +124,9 @@ export class Rock extends Object2D {
                 break;
         }
 
-        const rate = randomFloat(.7, 1);
-        sound.rate(rate);
-        sound.play();
+        // const rate = randomFloat(.7, 1);
+        // sound.rate(rate);
+        // sound.play();
 
         if (this.size > RockSize.Small) {
 
@@ -182,20 +182,20 @@ export function createRocks(level: number): Rock[] {
 
         switch (zone) {
             case 1:
-                x = random(offset, screen.width - offset); 
+                x = random(offset, WIDTH - offset); 
                 y = random(offset, offset * 2); 
                 break;
             case 2:
-                x = random(screen.width - (offset * 2), screen.width - offset);
-                y = random(screen.height - offset, screen.height - offset);
+                x = random(WIDTH - (offset * 2), WIDTH - offset);
+                y = random(HEIGHT - offset, HEIGHT - offset);
                 break;
             case 3:
-                x = random(offset, screen.width - offset);
-                y = random(screen.height - offset, screen.height - offset); 
+                x = random(offset, WIDTH - offset);
+                y = random(HEIGHT - offset, HEIGHT - offset); 
                 break;
             default:
                 x = random(offset, offset * 2);
-                y = random(screen.height - offset, screen.height - offset);
+                y = random(HEIGHT - offset, HEIGHT - offset);
                 break;
         }
 

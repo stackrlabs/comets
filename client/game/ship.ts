@@ -147,13 +147,13 @@ export class Ship extends Object2D {
             this.flame.velocity = this.velocity;
         }
 
-        thrust.play();
+        // thrust.play();
     }
 
     private fire() {
         if (this.bulletTimer <= 0 && this.bulletCount < MAX_BULLETS) {
             
-            fire.play();
+            // fire.play();
 
             this.bulletTimer = BULLET_TIME;
             this.bulletCount++;
