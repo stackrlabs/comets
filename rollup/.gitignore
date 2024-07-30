@@ -1,0 +1,8 @@
+node_modules/
+build/
+bun.lockb
+stackr_build/
+.env
+dist/
+.DS_Store
+*.sqlite

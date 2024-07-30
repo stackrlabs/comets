@@ -1,6 +1,6 @@
 import { ActionSchema, AllowedInputTypes, MicroRollup } from "@stackr/sdk";
 import { HDNodeWallet, Wallet } from "ethers";
-import { stackrConfig } from "../stackr.config";
+import { stackrConfig } from "./stackr.config";
 import { TickActionSchema } from "./stackr/action";
 import { machine } from "./stackr/machine";
 
@@ -28,19 +28,19 @@ const main = async () => {
 
   await mru.init();
 
-  const inputs = {
-    timestamp: Date.now(),
-  };
+  // const inputs = {
+  //   timestamp: Date.now(),
+  // };
 
-  const signature = await signMessage(wallet, TickActionSchema, inputs);
-  const incrementAction = TickActionSchema.actionFrom({
-    inputs,
-    signature,
-    msgSender: wallet.address,
-  });
+  // const signature = await signMessage(wallet, TickActionSchema, inputs);
+  // const incrementAction = TickActionSchema.actionFrom({
+  //   inputs,
+  //   signature,
+  //   msgSender: wallet.address,
+  // });
 
-  const ack = await mru.submitAction("increment", incrementAction);
-  console.log(ack);
+  // const ack = await mru.submitAction("increment", incrementAction);
+  // console.log(ack);
 };
 
 main();

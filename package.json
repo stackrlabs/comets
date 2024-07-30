@@ -1,34 +1,7 @@
 {
-  "name": "asteroids",
-  "version": "1.0.0",
-  "description": "Asteroids",
-  "keywords": [
-    "Asteroids",
-    "Game",
-    "Atari",
-    "JavaScript",
-    "TypeScript"
-  ],
-  "main": "asteroids.js",
+  "name": "comets",
   "scripts": {
-    "build": "webpack --config webpack.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "set NODE_ENV=dev&&webpack --watch"
-  },
-  "author": "J.P. Hamilton",
-  "license": "MIT",
-  "devDependencies": {
-    "@types/hammerjs": "^2.0.41",
-    "file-loader": "^6.2.0",
-    "ts-loader": "9.4.2",
-    "typescript": "4.9.4",
-    "webpack": "^5.76.0",
-    "webpack-cli": "^5.0.1"
-  },
-  "dependencies": {
-    "@stackr/sdk": "^0.5.1",
-    "dotenv": "^16.4.5",
-    "hammerjs": "^2.0.8",
-    "howler": "^2.2.3"
+    "build:client": "cd client && npm run build",
+    "start:server": "cd rollup && bun run index.ts"
   }
 }
