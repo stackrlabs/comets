@@ -47,5 +47,14 @@ export class TickRecorder {
 
     public sendTicks() {
         console.log(`Found about ${this.ticks.length} ticks to send`);
+    const data = JSON.stringify(this.ticks, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'ticks.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    console.log('Ticks successfully saved to disk.');
     }
 }
