@@ -1,7 +1,7 @@
 import { Key } from './keys';
 
-export class ActionBatcher {
-    public actions: { [key: string]: boolean }[] = [];
+export class TickRecorder {
+    public ticks: { [key: string]: boolean }[] = [];
 
     public collectInputs() {
         const inputMap: { [key: string]: boolean } = {};
@@ -32,12 +32,12 @@ export class ActionBatcher {
         if (Key.wasHyperspace()) {
             inputMap['wasHyperspace'] = true; 
         }
-        // console.log(this.inputMap);
-        this.actions.push(inputMap);
+            
+        this.ticks.push(inputMap);
     }
 
-    public sendActions() {
-        console.log(`Found about ${this.actions.length} actions to send`);
-        this.actions = [];
+    public sendTicks() {
+        console.log(`Found about ${this.ticks.length} ticks to send`);
+        this.ticks = [];
     }
 }
