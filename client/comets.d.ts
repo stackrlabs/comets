@@ -1,7 +1,9 @@
 interface IGameState {
-    update: (step: number) => void;
+    update: (step: number, inputs?: VirtualInputs) => void;
     render: (dt?: number) => void;
 }
+
+type VirtualInputs = { [key: string]: boolean };
 
 interface Point {
     x: number,

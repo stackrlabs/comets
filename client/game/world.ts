@@ -63,7 +63,7 @@ export class World {
         return [this.ship, this.alien, ...this.shipBullets, ...this.alienBullets, ...this.rocks, ...this.shockwaves, ...this.scenery];
     }
 
-    update(dt: number) {
+    update(dt: number, inputs: VirtualInputs) {
         
         if (this.slowMoTimer) {
             dt = this.slowMoTimer.adjust(dt);
@@ -81,7 +81,7 @@ export class World {
 
         this.objects.forEach(obj => {
             if (obj) {
-                obj.update(dt);
+                obj.update(dt, inputs);
             }
         });
     }

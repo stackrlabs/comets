@@ -25,7 +25,7 @@ export class GameMode extends EventSource implements IGameState {
         this.thumper = new Thumper();
     }
 
-    update(dt: number) {
+    update(dt: number, inputs?: VirtualInputs) {
         
         this.world.levelTimer += dt;
         
@@ -76,7 +76,7 @@ export class GameMode extends EventSource implements IGameState {
         }
 
         // update all objects
-        this.world.update(dt);
+        this.world.update(dt, inputs);
     }
 
     render(delta: number) {

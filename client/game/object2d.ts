@@ -1,4 +1,4 @@
-import screen from './screen';
+import screen, {WIDTH, HEIGHT, OBJECT_SCALE} from './screen';
 import { EventSource } from './events';
 import { COS, SIN } from './lut';
 import { Vector } from './vector';
@@ -36,8 +36,8 @@ export abstract class Object2D extends EventSource implements Rect, IGameState {
 
     set points(points: Point[]) {
         points.forEach(p => {
-            p.x *= screen.objectScale;
-            p.y *= screen.objectScale;
+            p.x *= OBJECT_SCALE;
+            p.y *= OBJECT_SCALE;
         })
         this._points = points;
         this.calcBounds();
@@ -88,20 +88,20 @@ export abstract class Object2D extends EventSource implements Rect, IGameState {
         this.origin.x += this.velocity.x * dt;
         this.origin.y += this.velocity.y * dt;
         
-        if (this.origin.x > screen.width) {
-            this.origin.x -= screen.width;
+        if (this.origin.x > WIDTH) {
+            this.origin.x -= WIDTH;
         }
 
         if (this.origin.x < 0) {
-            this.origin.x += screen.width;
+            this.origin.x += WIDTH;
         }
 
-        if (this.origin.y > screen.height) {
-            this.origin.y -= screen.height;
+        if (this.origin.y > HEIGHT) {
+            this.origin.y -= HEIGHT;
         }
 
         if (this.origin.y < 0) {
-            this.origin.y += screen.height;
+            this.origin.y += HEIGHT;
         }
     }
     

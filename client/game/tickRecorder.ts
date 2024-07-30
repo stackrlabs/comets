@@ -1,10 +1,10 @@
 import { Key } from './keys';
 
 export class TickRecorder {
-    public ticks: { [key: string]: boolean }[] = [];
+    public ticks: VirtualInputs[] = [];
 
-    public collectInputs() {
-        const inputMap: { [key: string]: boolean } = {};
+    public collectInputs(): VirtualInputs {
+        const inputMap: VirtualInputs = {};
         if (Key.isThrust()) {
             inputMap['isThrust'] = true;
         }
@@ -32,12 +32,19 @@ export class TickRecorder {
         if (Key.wasHyperspace()) {
             inputMap['wasHyperspace'] = true; 
         }
-            
-        this.ticks.push(inputMap);
+
+        return inputMap
+    }
+
+    public recordInputs(inputs: VirtualInputs) {
+        this.ticks.push(inputs);
+    }
+
+    public reset() {
+        this.ticks = [];
     }
 
     public sendTicks() {
         console.log(`Found about ${this.ticks.length} ticks to send`);
-        this.ticks = [];
     }
 }
