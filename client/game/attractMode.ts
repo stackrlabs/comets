@@ -1,6 +1,6 @@
 import { IGameState } from "../comets";
 import { startGame } from "../rpc/api";
-import { addToStore, StorageKey } from "../rpc/storage";
+import { addToStore, getFromStore, StorageKey } from "../rpc/storage";
 import { DemoMode } from "./demoMode";
 import { EventSource } from "./events";
 import { HighScoreMode } from "./highScoreMode";
@@ -36,8 +36,16 @@ export class AttractMode extends EventSource implements IGameState {
 
   update(step: number) {
     this.currentMode.update(step);
+    // since page is reloaded on update for now, we need to check if game is already started
+    if (getFromStore(StorageKey.GAME_ID)) {
+      this.trigger("done");
+    }
+
     if (Key.isAnyPressed()) {
-      if (!this.isStarting) {
+      if (getFromStore(StorageKey.GAME_ID)) {
+        this.trigger("done");
+      } else if (!this.isStarting) {
+        this.isStarting = true;
         startGame().then((res) => {
           if (res?.error || !res.isOk) {
             console.error(res.error);
@@ -48,7 +56,6 @@ export class AttractMode extends EventSource implements IGameState {
           this.isStarting = false;
         });
       }
-      this.trigger("done");
     } else {
       this.updateAttractTimer(step);
     }

@@ -1,5 +1,10 @@
 import { getAddress } from "viem";
-import { addToStore, getFromStore, StorageKey } from "./storage";
+import {
+  addToStore,
+  getFromStore,
+  removeFromStore,
+  StorageKey,
+} from "./storage";
 import { getWalletClient } from "./wallet";
 
 const API_URL = "http://localhost:3210";
@@ -40,7 +45,8 @@ const submitAction = async (transition: string, inputs: any) => {
 };
 
 const endGame = async (inputs: any) => {
-  return submitAction("endGame", inputs);
+  await submitAction("endGame", inputs);
+  removeFromStore(StorageKey.GAME_ID);
 };
 
 const startGame = async () => {
@@ -49,4 +55,5 @@ const startGame = async () => {
   return res;
 };
 
-export { endGame, startGame, fetchMruInfo };
+export { endGame, fetchMruInfo, startGame };
+

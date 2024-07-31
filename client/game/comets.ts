@@ -1,5 +1,6 @@
 import { IGameState } from "../comets";
 import { fetchMruInfo } from "../rpc/api";
+import { removeFromStore, StorageKey } from "../rpc/storage";
 import { getWalletClient } from "../rpc/wallet";
 import { AttractMode } from "./attractMode";
 import { GameMode } from "./gameMode";
