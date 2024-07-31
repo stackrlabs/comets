@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "hammerjs": "^2.0.8",
-    "howler": "^2.2.3",
     "viem": "^2.18.6"
   }
 }
