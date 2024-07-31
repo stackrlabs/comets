@@ -9,12 +9,14 @@ export const EndGameSchema = new ActionSchema("endGame", {
   timestamp: SolidityType.UINT, // nonce
   score: SolidityType.UINT,
   keypresses: [
-    { wasHyperspace: SolidityType.BOOL },
-    { isRotateLeft: SolidityType.BOOL },
-    { wasRotateLeft: SolidityType.BOOL },
-    { isRotateRight: SolidityType.BOOL },
-    { wasRotateRight: SolidityType.BOOL },
-    { isThrust: SolidityType.BOOL },
-    { isFire: SolidityType.BOOL },
+    {
+      wasHyperspace: SolidityType.BOOL,
+      isRotateLeft: SolidityType.BOOL,
+      wasRotateLeft: SolidityType.BOOL,
+      isRotateRight: SolidityType.BOOL,
+      wasRotateRight: SolidityType.BOOL,
+      isThrust: SolidityType.BOOL,
+      isFire: SolidityType.BOOL,
+    },
   ],
 });
