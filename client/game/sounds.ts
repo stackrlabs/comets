@@ -1,45 +1,50 @@
 declare var require;
 
-import { Howl } from 'howler';
 
-const VOLUME = .5;
+const VOLUME = 0.5;
 
 let soundOn: boolean = true;
 
 export const all = [];
 
 function createSound(options) {
-    let count = 0;
+  let count = 0;
 
-    const sound = new Howl(options);
+  const sound = {
+    play: () => {},
+    stop: () => {},
+    volume: () => {},
+    on: (s, f) => {},
+    off: () => {},
+    _origVolume: 0,
+  };
 
-    sound.on('end', () => {
-        if (options.max) {
-            count--;
+  sound.on("end", () => {
+    if (options.max) {
+      count--;
+    }
+  });
+
+  const play = sound.play.bind(sound);
+  const canPlay = options.max ? count < options.max && soundOn : soundOn;
+
+  sound.play = () => {
+    if (soundOn) {
+      if (options.max) {
+        if (count < options.max) {
+          play();
+          count++;
         }
-    });
+      } else {
+        play();
+      }
+    }
+  };
 
-    const play = sound.play.bind(sound);
-    const canPlay = options.max ? count < options.max && soundOn : soundOn;
+  sound._origVolume = options.volume;
 
-    sound.play = () => {
-        if (soundOn) {
-            
-            if (options.max) {
-                if (count < options.max) {
-                    play();
-                    count++;
-                }
-            } else {
-                play();
-            }
-        }
-    };
-
-    sound._origVolume = options.volume;
-
-    all.push(sound);
-    return sound;
+  all.push(sound);
+  return sound;
 }
 
 export const fire = createSound({
