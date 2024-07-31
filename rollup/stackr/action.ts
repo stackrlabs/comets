@@ -1,10 +1,10 @@
 import { ActionSchema, SolidityType } from "@stackr/sdk";
 
-export const CreateGameSchema = new ActionSchema("createGame", {
+export const StartGameSchema = new ActionSchema("startGame", {
   timestamp: SolidityType.UINT,
 });
 
-export const ValidateGameSchema = new ActionSchema("validateGame", {
+export const EndGameSchema = new ActionSchema("endGame", {
   gameId: SolidityType.UINT,
   timestamp: SolidityType.UINT, // nonce
   score: SolidityType.UINT,

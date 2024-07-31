@@ -22,7 +22,7 @@ export type ValidateGameInput = {
   ];
 };
 
-const createGame: STF<AppState, ValidateGameInput> = {
+const startGame: STF<AppState, ValidateGameInput> = {
   handler: ({ state, msgSender, block, emit }) => {
     const gameId = hashMessage(
       `${msgSender}::${block.timestamp}::${state.games}`
@@ -77,6 +77,6 @@ const endGame: STF<AppState, ValidateGameInput> = {
 };
 
 export const transitions: Transitions<AppState> = {
-  validateGame: endGame,
-  createGame,
+  startGame,
+  endGame,
 };
