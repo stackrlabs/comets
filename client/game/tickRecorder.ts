@@ -1,5 +1,7 @@
-import { Key } from './keys';
-import { VirtualInputs } from '../comets';
+import { endGame } from "../rpc/api";
+import { VirtualInputs } from "../comets";
+import { Key } from "./keys";
+import { getFromStore, StorageKey } from "../rpc/storage";
 
 export class TickRecorder {
   public ticks: VirtualInputs[] = [];
@@ -45,27 +47,17 @@ export class TickRecorder {
     this.ticks = [];
   }
 
-  public sendTicks(score: number) {
+  async sendTicks(score: number) {
     console.log(
       `Sending ${this.ticks.length} ticks and score ${score} to MRU...`
     );
-    const data = JSON.stringify(
-      {
-        gameId: 1,
-        timestamp: Date.now(),
-        score,
-        keypresses: this.ticks,
-      },
-      null,
-      2
-    );
-    const blob = new Blob([data], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "ticks.json";
-    a.click();
-    URL.revokeObjectURL(url);
-    console.log("Ticks successfully saved to disk.");
+    const payload = {
+      gameId: getFromStore(StorageKey.GAME_ID),
+      timestamp: Date.now(),
+      score,
+      keypresses: this.ticks,
+    };
+
+    await endGame(payload);
   }
 }

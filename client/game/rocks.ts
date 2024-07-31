@@ -186,7 +186,7 @@ export class Rock extends Object2D {
 
 export function createRocks(level: number): Rock[] {
   const rocks = [];
-  const count = Math.min(level + 3, 10);
+  const count = Math.min(level + 5, 12);
   const speed = 150;
   const offset = 20;
 

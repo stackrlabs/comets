@@ -17,7 +17,6 @@ import { random } from "./util";
 
 const EXTRA_LIFE = 10000;
 const SHAKE_TIME = 0.5;
-const DRAMATIC_PAUSE_TIME = 5;
 
 let explosionCount = 0;
 let maxExplosionCount = 0;
