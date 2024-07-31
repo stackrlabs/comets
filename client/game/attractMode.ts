@@ -36,19 +36,19 @@ export class AttractMode extends EventSource implements IGameState {
 
   update(step: number) {
     this.currentMode.update(step);
-    if (Key.isAnyPressed() && !this.isStarting) {
-      this.isStarting = true;
-      startGame().then((res) => {
-        console.log(res);
-        if (res?.error || !res.isOk) {
-          console.error(res.error);
-          return;
-        }
-
-        addToStore(StorageKey.GAME_ID, res);
-        this.trigger("done");
-        this.isStarting = false;
-      });
+    if (Key.isAnyPressed()) {
+      if (!this.isStarting) {
+        startGame().then((res) => {
+          if (res?.error || !res.isOk) {
+            console.error(res.error);
+            return;
+          }
+          console.log("Game started", res.logs[0].value);
+          addToStore(StorageKey.GAME_ID, res.logs[0].value);
+          this.isStarting = false;
+        });
+      }
+      this.trigger("done");
     } else {
       this.updateAttractTimer(step);
     }
