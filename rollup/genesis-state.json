@@ -1,7 +1,12 @@
 {
   "state": {
-    "time": 0,
-    "x": 0,
-    "y": 0
+    "games": [
+      {
+        "id": "1",
+        "score": 0,
+        "player": "0x94bE2330e995A6A1ef2b563E801Ec04AA9DE03DE",
+        "isEnded": false
+      }
+    ]
   }
 }
