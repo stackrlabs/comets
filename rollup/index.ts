@@ -116,7 +116,6 @@ const main = async () => {
     schema: ActionSchema,
     payload: any
   ) => {
-    console.log(payload);
     const action = schema.actionFrom(payload);
     const ack = await mru.submitAction(transition, action);
     const { logs, errors } = await ack.waitFor(ActionConfirmationStatus.C1);
