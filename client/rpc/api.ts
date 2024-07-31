@@ -1,3 +1,4 @@
+import { getAddress } from "viem";
 import { addToStore, getFromStore, StorageKey } from "./storage";
 import { getWalletClient } from "./wallet";
 
@@ -13,7 +14,7 @@ const submitAction = async (transition: string, inputs: any) => {
   const walletClient = await getWalletClient();
   const mruInfo = getFromStore(StorageKey.MRU_INFO);
   const { domain, schemas } = mruInfo;
-  const msgSender = walletClient.account.address;
+  const msgSender = getAddress(walletClient.account.address);
 
   const signature = await walletClient.signTypedData({
     domain,
