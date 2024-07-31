@@ -1,13 +1,24 @@
 import { endGame } from "../rpc/api";
-import { VirtualInputs } from "../comets";
+import { VirtualInput } from "../comets";
 import { Key } from "./keys";
 import { getFromStore, StorageKey } from "../rpc/storage";
+import { ACTIONS } from "./gameMode";
 
 export class TickRecorder {
-  public ticks: VirtualInputs[] = [];
+  public ticks: VirtualInput[] = [];
 
-  public collectInputs(): VirtualInputs {
-    const inputMap: VirtualInputs = {};
+  serializedTicks(): { v: string }[] {
+    return this.ticks.map((input) => {
+      return {
+        v: ACTIONS.map((action) => {
+          return input[action] ? "1" : "0";
+        }).join(""),
+      };
+    });
+  }
+
+  public collectInputs(): VirtualInput {
+    const inputMap: VirtualInput = {};
     if (Key.isThrust()) {
       inputMap["isThrust"] = true;
     }
@@ -39,7 +50,7 @@ export class TickRecorder {
     return inputMap;
   }
 
-  public recordInputs(inputs: VirtualInputs) {
+  public recordInputs(inputs: VirtualInput) {
     this.ticks.push(inputs);
   }
 
@@ -55,7 +66,7 @@ export class TickRecorder {
       gameId: getFromStore(StorageKey.GAME_ID),
       timestamp: Date.now(),
       score,
-      keypresses: this.ticks,
+      ticks: this.serializedTicks(),
     };
 
     await endGame(payload);

@@ -1,6 +1,6 @@
 import { Screen } from "./screen";
 import { WIDTH, HEIGHT, OBJECT_SCALE } from "./constants";
-import { VirtualInputs } from "../comets";
+import { VirtualInput } from "../comets";
 import { Object2D } from "./object2d";
 import { Vector } from "./vector";
 import { Bullet } from "./bullet";
@@ -86,7 +86,7 @@ export class Ship extends Object2D {
     }
   }
 
-  update(dt: number, inputs?: VirtualInputs) {
+  update(dt: number, inputs?: VirtualInput) {
     this.move(dt);
     this.flame.move(dt);
 

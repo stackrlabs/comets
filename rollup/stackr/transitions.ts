@@ -11,15 +11,7 @@ export type CreateGame = {
 export type ValidateGameInput = {
   gameId: number;
   score: number;
-  keypresses: [
-    { wasHyperspace: boolean },
-    { isRotateLeft: boolean },
-    { wasRotateLeft: boolean },
-    { isRotateRight: boolean },
-    { wasRotateRight: boolean },
-    { isThrust: boolean },
-    { isFire: boolean }
-  ];
+  ticks: { v: string }[];
 };
 
 const startGame: STF<AppState, ValidateGameInput> = {
@@ -45,7 +37,7 @@ const startGame: STF<AppState, ValidateGameInput> = {
 
 const endGame: STF<AppState, ValidateGameInput> = {
   handler: ({ state, inputs, msgSender }) => {
-    const { keypresses, gameId, score } = inputs;
+    const { ticks, gameId, score } = inputs;
     const { games } = state;
     if (!games[gameId]) {
       throw new Error("Game not found");
@@ -61,8 +53,8 @@ const endGame: STF<AppState, ValidateGameInput> = {
 
     const world = new World(0);
     const gameMode = new GameMode(world);
-    for (const kp of keypresses) {
-      gameMode.update(1 / 60, kp);
+    for (const t of ticks) {
+      gameMode.deserializeAndUpdate(1 / 60, t);
     }
 
     if (world.score !== score) {

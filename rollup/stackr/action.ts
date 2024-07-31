@@ -8,15 +8,9 @@ export const EndGameSchema = new ActionSchema("endGame", {
   gameId: SolidityType.UINT,
   timestamp: SolidityType.UINT, // nonce
   score: SolidityType.UINT,
-  keypresses: [
+  ticks: [
     {
-      wasHyperspace: SolidityType.BOOL,
-      isRotateLeft: SolidityType.BOOL,
-      wasRotateLeft: SolidityType.BOOL,
-      isRotateRight: SolidityType.BOOL,
-      wasRotateRight: SolidityType.BOOL,
-      isThrust: SolidityType.BOOL,
-      isFire: SolidityType.BOOL,
+      v: SolidityType.STRING,
     },
   ],
 });

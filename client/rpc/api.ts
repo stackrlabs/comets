@@ -21,6 +21,8 @@ const submitAction = async (transition: string, inputs: any) => {
   const { domain, schemas } = mruInfo;
   const msgSender = getAddress(walletClient.account.address);
 
+  console.log(inputs);
+
   const signature = await walletClient.signTypedData({
     domain,
     primaryType: schemas[transition].primaryType,
