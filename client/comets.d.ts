@@ -1,11 +1,11 @@
 import {Screen} from './game/screen';
 
 interface IGameState {
-    update: (step: number, inputs?: VirtualInputs) => void;
-    render: (screen: Screen, dt?: number) => void;
+  update: (step: number, inputs?: VirtualInput) => void;
+  render: (screen: Screen, dt?: number) => void;
 }
 
-type VirtualInputs = { [key: string]: boolean };
+type VirtualInput = { [key: string]: boolean };
 
 interface Point {
     x: number,

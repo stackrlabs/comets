@@ -1,4 +1,4 @@
-import { Asteroids } from "./comets";
+import { Comets } from "./comets";
 
 const timestamp = () => {
   return window.performance && window.performance.now
@@ -13,7 +13,7 @@ let last = timestamp();
 const DT = 1 / 60;
 const ONE_SECOND = 1000;
 
-const init = (state: Asteroids) => {
+const init = (state: Comets) => {
   const frame = () => {
     now = timestamp();
     delta += Math.min(1, (now - last) / ONE_SECOND);
@@ -34,6 +34,6 @@ const init = (state: Asteroids) => {
   frame();
 };
 
-export const loop = (state: Asteroids) => {
+export const loop = (state: Comets) => {
   init(state);
 };

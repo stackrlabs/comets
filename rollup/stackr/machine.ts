@@ -54,11 +54,12 @@ export class AppState extends State<RawState, WrappedState> {
   }
 }
 
+const MACHINE_ID = "worldEngine";
 const machine = new StateMachine({
-  id: "worldEngine",
+  id: MACHINE_ID,
   stateClass: AppState,
   initialState: genesisState.state,
   on: transitions,
 });
 
-export { machine };
+export { machine, MACHINE_ID };
