@@ -49,6 +49,7 @@ export class AttractMode extends EventSource implements IGameState {
         startGame().then((res) => {
           if (res?.error || !res.isOk) {
             console.error(res.error);
+            this.isStarting = false;
             return;
           }
           console.log("Game started", res.logs[0].value);
