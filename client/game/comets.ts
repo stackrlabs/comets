@@ -1,17 +1,20 @@
-import { loop } from "./loop";
-import { Key, Keys } from "./keys";
-import { World } from "./world";
-import { Sound } from "./sounds";
-import { Highscores } from "./highscores";
+import { IGameState } from "../comets";
+import { fetchMruInfo } from "../rpc/api";
+import { removeFromStore, StorageKey } from "../rpc/storage";
+import { getWalletClient } from "../rpc/wallet";
 import { AttractMode } from "./attractMode";
-import { InitialsMode } from "./initialsMode";
 import { GameMode } from "./gameMode";
 import Global from "./global";
-import { TickRecorder } from "./tickRecorder";
-import { IGameState } from "../comets";
+import { Highscores } from "./highscores";
+import { InitialsMode } from "./initialsMode";
+import { Key, Keys } from "./keys";
+import { loop } from "./loop";
 import { Screen } from "./screen";
+import { Sound } from "./sounds";
+import { TickRecorder } from "./tickRecorder";
+import { World } from "./world";
 
-export class Asteroids {
+export class Comets {
   private lastScore = 0;
   private attractMode: AttractMode;
   private gameMode: GameMode;
@@ -38,7 +41,7 @@ export class Asteroids {
       this.currentMode = this.gameMode;
       this.tickRecorder.reset();
 
-      this.gameMode.on("done", (source, world) => {
+      this.gameMode.on("done", async (source, world) => {
         // Send ticks in the form of an action to MRU
         // And wait for C1 to confirm score
         this.lastScore = world.score;
@@ -54,11 +57,13 @@ export class Asteroids {
           // restart in attract mode
           this.init();
         }
-        this.tickRecorder.sendTicks(this.lastScore);
+        await this.tickRecorder.sendTicks(this.lastScore);
+        console.log("Game over");
       });
     };
 
     this.attractMode.on("done", () => {
+      console.log("Done with Attract Mode");
       setGameMode();
     });
   }
@@ -106,8 +111,13 @@ export class Asteroids {
   }
 }
 
-const game = new Asteroids();
+const game = new Comets();
 
-setTimeout(() => {
-  loop(game);
-}, 1000);
+// setup things
+(async () => {
+  await fetchMruInfo();
+  await getWalletClient();
+  setTimeout(() => {
+    loop(game);
+  }, 1000);
+})();

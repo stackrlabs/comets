@@ -1,4 +1,4 @@
-import { IGameState, Rect, VirtualInputs } from "../comets";
+import { IGameState, Rect, VirtualInput } from "../comets";
 import { Collisions } from "./collisions";
 import { HEIGHT, WIDTH } from "./constants";
 import { EventSource } from "./events";
@@ -7,6 +7,16 @@ import { Object2D } from "./object2d";
 import { Screen } from "./screen";
 import { Thumper } from "./thump";
 import { World } from "./world";
+
+export const ACTIONS = [
+  "isThrust",
+  "wasRotateLeft",
+  "isRotateLeft",
+  "wasRotateRight",
+  "isRotateRight",
+  "isFire",
+  "wasHyperspace",
+];
 
 export class GameMode extends EventSource implements IGameState {
   bounds: Object2D[] = [];
@@ -24,7 +34,16 @@ export class GameMode extends EventSource implements IGameState {
     this.thumper = new Thumper();
   }
 
-  update(dt: number, inputs?: VirtualInputs) {
+  deserializeAndUpdate(dt: number, input: { v: string }) {
+    const vi = input.v.split("").reduce((acc, action, index) => {
+      acc[ACTIONS[index]] = action === "1";
+      return acc;
+    }, {});
+
+    this.update(dt, vi);
+  }
+
+  update(dt: number, inputs?: VirtualInput) {
     this.world.levelTimer += dt;
 
     if (this.thumper && this.world.ship) {

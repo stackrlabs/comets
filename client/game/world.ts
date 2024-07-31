@@ -1,4 +1,4 @@
-import { IGameState, Rect, VirtualInputs } from "../comets";
+import { IGameState, Rect, VirtualInput } from "../comets";
 import { Achievement } from "./achievement";
 import { Alien, BigAlien, SmallAlien } from "./alien";
 import { Bullet } from "./bullet";
@@ -17,7 +17,6 @@ import { random } from "./util";
 
 const EXTRA_LIFE = 10000;
 const SHAKE_TIME = 0.5;
-const DRAMATIC_PAUSE_TIME = 5;
 
 let explosionCount = 0;
 let maxExplosionCount = 0;
@@ -70,7 +69,7 @@ export class World {
     ];
   }
 
-  update(dt: number, inputs: VirtualInputs) {
+  update(dt: number, inputs: VirtualInput) {
     if (this.slowMoTimer) {
       dt = this.slowMoTimer.adjust(dt);
     }

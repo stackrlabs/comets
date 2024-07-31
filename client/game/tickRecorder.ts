@@ -1,11 +1,24 @@
-import { Key } from './keys';
-import { VirtualInputs } from '../comets';
+import { endGame } from "../rpc/api";
+import { VirtualInput } from "../comets";
+import { Key } from "./keys";
+import { getFromStore, StorageKey } from "../rpc/storage";
+import { ACTIONS } from "./gameMode";
 
 export class TickRecorder {
-  public ticks: VirtualInputs[] = [];
+  public ticks: VirtualInput[] = [];
 
-  public collectInputs(): VirtualInputs {
-    const inputMap: VirtualInputs = {};
+  serializedTicks(): { v: string }[] {
+    return this.ticks.map((input) => {
+      return {
+        v: ACTIONS.map((action) => {
+          return input[action] ? "1" : "0";
+        }).join(""),
+      };
+    });
+  }
+
+  public collectInputs(): VirtualInput {
+    const inputMap: VirtualInput = {};
     if (Key.isThrust()) {
       inputMap["isThrust"] = true;
     }
@@ -37,7 +50,7 @@ export class TickRecorder {
     return inputMap;
   }
 
-  public recordInputs(inputs: VirtualInputs) {
+  public recordInputs(inputs: VirtualInput) {
     this.ticks.push(inputs);
   }
 
@@ -45,27 +58,17 @@ export class TickRecorder {
     this.ticks = [];
   }
 
-  public sendTicks(score: number) {
+  async sendTicks(score: number) {
     console.log(
       `Sending ${this.ticks.length} ticks and score ${score} to MRU...`
     );
-    const data = JSON.stringify(
-      {
-        gameId: 1,
-        timestamp: Date.now(),
-        score,
-        keypresses: this.ticks,
-      },
-      null,
-      2
-    );
-    const blob = new Blob([data], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "ticks.json";
-    a.click();
-    URL.revokeObjectURL(url);
-    console.log("Ticks successfully saved to disk.");
+    const payload = {
+      gameId: getFromStore(StorageKey.GAME_ID),
+      timestamp: Date.now(),
+      score,
+      ticks: this.serializedTicks(),
+    };
+
+    await endGame(payload);
   }
 }

@@ -1,168 +1,169 @@
-import * as Hammer from 'hammerjs';
+import * as Hammer from "hammerjs";
 
 type KeyPressMap = { [key: number]: boolean };
 
 export const Keys = {
-    HYPERSPACE : 32,
-    ROTATE_LEFT : 37,
-    ROTATE_LEFT_A : 65,
-    ROTATE_RIGHT : 39,
-    ROTATE_RIGHT_D : 68,
-    THRUST : 38,
-    THRUST_W : 87,
-    FIRE : 17,
-    DEBUG : 90,
-    PAUSE : 80,
-    GOD : 71,
-    MONITOR_BURN : 66,
-}
+  HYPERSPACE: 32,
+  ROTATE_LEFT: 37,
+  ROTATE_LEFT_A: 65,
+  ROTATE_RIGHT: 39,
+  ROTATE_RIGHT_D: 68,
+  THRUST: 38,
+  THRUST_W: 87,
+  FIRE: 17,
+  DEBUG: 90,
+  PAUSE: 80,
+  GOD: 71,
+  MONITOR_BURN: 66,
+};
 
 export class _Key {
+  keys: KeyPressMap = {};
+  prev: KeyPressMap = {};
+  touched: boolean = false;
+  mc: any;
 
-    keys: KeyPressMap = {}; 
-    prev: KeyPressMap = {};
-    touched: boolean = false;
-    mc: any;
+  constructor() {
+    window.onkeydown = (e) => {
+      this.keys[e.keyCode] = true;
+    };
 
-    constructor() {
-        window.onkeydown = (e) => {
-            this.keys[e.keyCode] = true;
-        }
+    window.onkeyup = (e) => {
+      this.keys[e.keyCode] = false;
+    };
 
-        window.onkeyup = (e) => {
-            this.keys[e.keyCode] = false;
-        }
+    const stage = document.getElementById("game");
+    this.mc = new Hammer.Manager(stage);
 
-        const stage = document.getElementById('game');
-        this.mc = new Hammer.Manager(stage);
-        
-        const pan = new Hammer.Pan();
-        const tap = new Hammer.Tap();
-        const pinch = new Hammer.Pinch({
-            enable: true
-        });
+    const pan = new Hammer.Pan();
+    const tap = new Hammer.Tap();
+    const pinch = new Hammer.Pinch({
+      enable: true,
+    });
 
-        this.mc.add(pan);
-        this.mc.add(tap, {
-            interval: 50
-        });
-        this.mc.add(pinch);
+    this.mc.add(pan);
+    this.mc.add(tap, {
+      interval: 50,
+    });
+    this.mc.add(pinch);
 
-        this.mc.on('panup', (e) => {
-            this.thrust(true);
-        });
+    this.mc.on("panup", (e) => {
+      this.thrust(true);
+    });
 
-        this.mc.on('panleft', (e) => {
-            this.rotateLeft(true);
-        });
+    this.mc.on("panleft", (e) => {
+      this.rotateLeft(true);
+    });
 
-        this.mc.on('panright', (e) => {
-            this.rotateRight(true);
-        });
+    this.mc.on("panright", (e) => {
+      this.rotateRight(true);
+    });
 
-        this.mc.on('panend', (e) => {
-            this.thrust(false);
-            this.rotateLeft(false);
-            this.rotateRight(false);
-        });
+    this.mc.on("panend", (e) => {
+      this.thrust(false);
+      this.rotateLeft(false);
+      this.rotateRight(false);
+    });
 
-        this.mc.on('tap', (e) => {
-            this.fire(true);
-            this.touched = true;
-        });
+    this.mc.on("tap", (e) => {
+      this.fire(true);
+      this.touched = true;
+    });
 
-        this.mc.on('pinchout', (e) => {
-            this.hyperspace(true);
-        });
+    this.mc.on("pinchout", (e) => {
+      this.hyperspace(true);
+    });
 
-        this.mc.on('pinchend', (e) => {
-            this.hyperspace(false);
-        });
+    this.mc.on("pinchend", (e) => {
+      this.hyperspace(false);
+    });
+  }
 
+  update() {
+    Object.keys(this.keys).forEach((key) => {
+      this.prev[key] = this.keys[key];
+    });
+
+    if (this.touched) {
+      this.fire(false);
     }
 
-    update() {
-        Object.keys(this.keys).forEach(key => {
-            this.prev[key] = this.keys[key];
-        });
+    this.touched = !this.touched;
+  }
 
-        if (this.touched) {
-            this.fire(false);
-        }
+  isPressed(key: number) {
+    return this.prev[key] === false && this.keys[key] === true;
+  }
 
-        this.touched = !this.touched;
-    }
+  wasPressed(key: number) {
+    return this.prev[key] && !this.keys[key];
+  }
 
-    isPressed(key: number) {
-        return this.prev[key] === false && this.keys[key] === true;
-    }
+  isDown(key: number) {
+    return this.keys[key];
+  }
 
-    wasPressed(key: number) {
-        return this.prev[key] && !this.keys[key];
-    }
+  isAnyPressed() {
+    return !!Object.values(this.keys).filter((pressed) => pressed).length;
+  }
 
-    isDown(key: number) {
-        return this.keys[key];
-    }
+  isRotateLeft() {
+    return this.keys[Keys.ROTATE_LEFT] || this.keys[Keys.ROTATE_LEFT_A];
+  }
 
-    isAnyPressed() {
-        return !!Object.values(this.keys).filter(pressed => pressed).length;
-    }
+  isRotateRight() {
+    return this.keys[Keys.ROTATE_RIGHT] || this.keys[Keys.ROTATE_RIGHT_D];
+  }
 
-    isRotateLeft() {
-        return this.keys[Keys.ROTATE_LEFT] || this.keys[Keys.ROTATE_LEFT_A];
-    }
+  isThrust() {
+    return this.keys[Keys.THRUST] || this.keys[Keys.THRUST_W];
+  }
 
-    isRotateRight() {
-        return this.keys[Keys.ROTATE_RIGHT] || this.keys[Keys.ROTATE_RIGHT_D];
-    }
+  isFire() {
+    return this.keys[Keys.FIRE];
+  }
 
-    isThrust() {
-        return this.keys[Keys.THRUST] || this.keys[Keys.THRUST_W];
-    }
+  isHyperspace() {
+    return this.keys[Keys.HYPERSPACE];
+  }
 
-    isFire() {
-        return this.keys[Keys.FIRE];
-    }
+  wasRotateLeft() {
+    return (
+      this.isPressed(Keys.ROTATE_LEFT) || this.isPressed(Keys.ROTATE_LEFT_A)
+    );
+  }
 
-    isHyperspace() {
-        return this.keys[Keys.HYPERSPACE];
-    }
+  wasRotateRight() {
+    return (
+      this.isPressed(Keys.ROTATE_RIGHT) || this.isPressed(Keys.ROTATE_RIGHT_D)
+    );
+  }
 
-    wasRotateLeft() {
-        return this.isPressed(Keys.ROTATE_LEFT) || this.isPressed(Keys.ROTATE_LEFT_A);
-    }
+  wasHyperspace() {
+    return this.isPressed(Keys.HYPERSPACE);
+  }
 
-    wasRotateRight() {
-        return this.isPressed(Keys.ROTATE_RIGHT) || this.isPressed(Keys.ROTATE_RIGHT_D);
-    }
+  private rotateLeft = (active: boolean) => {
+    this.keys[Keys.ROTATE_LEFT] = active;
+    this.keys[Keys.ROTATE_LEFT_A] = active;
+  };
 
-    wasHyperspace() {
-        return this.isPressed(Keys.HYPERSPACE);
-    }
+  private rotateRight = (active: boolean) => {
+    this.keys[Keys.ROTATE_RIGHT] = active;
+    this.keys[Keys.ROTATE_RIGHT_D] = active;
+  };
 
-    private rotateLeft = (active: boolean) => {
-        this.keys[Keys.ROTATE_LEFT] = active;
-        this.keys[Keys.ROTATE_LEFT_A] = active;
-    }
+  private thrust = (active: boolean) => {
+    this.keys[Keys.THRUST] = active;
+  };
 
-    private rotateRight = (active: boolean) => {
-        this.keys[Keys.ROTATE_RIGHT] = active;
-        this.keys[Keys.ROTATE_RIGHT_D] = active;
-    }
+  private fire = (active: boolean) => {
+    this.keys[Keys.FIRE] = active;
+  };
 
-    private thrust = (active: boolean) => {
-        this.keys[Keys.THRUST] = active;
-    }
-
-    private fire = (active: boolean) => {
-        this.keys[Keys.FIRE] = active;
-    }
-
-    private hyperspace = (active: boolean) => {
-        this.keys[Keys.HYPERSPACE] = active;
-    }
+  private hyperspace = (active: boolean) => {
+    this.keys[Keys.HYPERSPACE] = active;
+  };
 }
 
 export const Key = new _Key();
-
