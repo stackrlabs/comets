@@ -45,6 +45,7 @@ export class Comets {
         // Send ticks in the form of an action to MRU
         // And wait for C1 to confirm score
         this.lastScore = world.score;
+        await this.tickRecorder.sendTicks(this.lastScore);
 
         if (Highscores.qualifies(world.score)) {
           this.initialsMode = new InitialsMode(world.score);
@@ -57,7 +58,6 @@ export class Comets {
           // restart in attract mode
           this.init();
         }
-        await this.tickRecorder.sendTicks(this.lastScore);
         console.log("Game over");
       });
     };
