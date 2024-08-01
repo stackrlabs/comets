@@ -25,7 +25,7 @@ export class AttractMode extends EventSource implements IGameState {
 
     this.modes = [
       new HighScoreMode(lastScore),
-      new DemoMode(world || new World(Highscores.top.score)),
+      new DemoMode(world || new World()),
     ];
 
     this.currentMode = this.modes[0];

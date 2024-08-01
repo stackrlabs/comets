@@ -1,12 +1,9 @@
 import { IGameState } from "../comets";
-import { fetchMruInfo } from "../rpc/api";
-import { removeFromStore, StorageKey } from "../rpc/storage";
+import { fetchLeaderboard, fetchMruInfo } from "../rpc/api";
 import { getWalletClient } from "../rpc/wallet";
 import { AttractMode } from "./attractMode";
 import { GameMode } from "./gameMode";
 import Global from "./global";
-import { Highscores } from "./highscores";
-import { InitialsMode } from "./initialsMode";
 import { Key, Keys } from "./keys";
 import { loop } from "./loop";
 import { Screen } from "./screen";
@@ -18,26 +15,23 @@ export class Comets {
   private lastScore = 0;
   private attractMode: AttractMode;
   private gameMode: GameMode;
-  private initialsMode: InitialsMode;
   private currentMode: IGameState;
   private tickRecorder: TickRecorder;
   private screen: Screen;
+  private isSendingTicks = false;
 
   constructor() {
     this.init();
   }
 
   init() {
-    this.attractMode = new AttractMode(
-      new World(Highscores.top.score),
-      this.lastScore
-    );
+    this.attractMode = new AttractMode(new World(), this.lastScore);
     this.screen = new Screen();
     this.currentMode = this.attractMode;
     this.tickRecorder = new TickRecorder();
 
     const setGameMode = () => {
-      this.gameMode = new GameMode(new World(Highscores.top.score));
+      this.gameMode = new GameMode(new World());
       this.currentMode = this.gameMode;
       this.tickRecorder.reset();
 
@@ -45,19 +39,21 @@ export class Comets {
         // Send ticks in the form of an action to MRU
         // And wait for C1 to confirm score
         this.lastScore = world.score;
-        await this.tickRecorder.sendTicks(this.lastScore);
-
-        if (Highscores.qualifies(world.score)) {
-          this.initialsMode = new InitialsMode(world.score);
-          this.currentMode = this.initialsMode;
-
-          this.initialsMode.on("done", () => {
-            this.init();
-          });
-        } else {
-          // restart in attract mode
-          this.init();
+        if (!this.isSendingTicks) {
+          this.tickRecorder
+            .sendTicks(this.lastScore)
+            .then(() => {
+              console.log("Sent ticks");
+            })
+            .catch((e) => {
+              console.error("Error sending ticks", e.message);
+            })
+            .finally(() => {
+              this.isSendingTicks = false;
+            });
         }
+        // restart in attract mode
+        this.init();
         console.log("Game over");
       });
     };
@@ -115,7 +111,7 @@ const game = new Comets();
 
 // setup things
 (async () => {
-  await fetchMruInfo();
+  await Promise.all([fetchMruInfo(), fetchLeaderboard()]);
   await getWalletClient();
   setTimeout(() => {
     loop(game);

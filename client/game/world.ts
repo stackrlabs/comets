@@ -27,7 +27,6 @@ const NUM_OF_LIVES = 1;
 export class World {
   level = 1;
   extraLifeScore = 0;
-  highscore;
   score = 0;
   lives = NUM_OF_LIVES;
 
@@ -53,9 +52,7 @@ export class World {
   gameOver: boolean = false;
   started: boolean = false;
 
-  constructor(highscore: number) {
-    this.highscore = highscore;
-  }
+  constructor() {}
 
   get objects(): any {
     return [
@@ -327,10 +324,6 @@ export class World {
     console.log(obj.score, name);
     this.score += obj.score;
     this.extraLifeScore += obj.score;
-
-    if (this.score > this.highscore) {
-      this.highscore = this.score;
-    }
 
     if (this.extraLifeScore >= EXTRA_LIFE) {
       this.lives++;

@@ -1,6 +1,7 @@
 export enum StorageKey {
   MRU_INFO = "mru_info",
   GAME_ID = "game_id",
+  LEADERBOARD = "leaderboard",
 }
 
 export const addToStore = (key: StorageKey, value: any) => {
@@ -12,5 +13,5 @@ export const removeFromStore = (key: StorageKey) => {
 };
 
 export const getFromStore = (key: StorageKey) => {
-  return JSON.parse(localStorage.getItem(key));
+  return JSON.parse(localStorage.getItem(key) || "null");
 };

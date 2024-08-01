@@ -1,7 +1,7 @@
 import { Comets } from "./comets";
 
 const timestamp = () => {
-  return window.performance && window.performance.now
+  return window.performance?.now
     ? window.performance.now()
     : new Date().getTime();
 };

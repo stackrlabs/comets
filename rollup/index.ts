@@ -111,6 +111,20 @@ const main = async () => {
     });
   });
 
+  app.get("/leaderboard", async (_req, res) => {
+    const { state } = stateMachine;
+    const topTen = [...state.games]
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 10);
+
+    const leaderboard = topTen.map((game) => ({
+      address: game.player,
+      score: game.score,
+    }));
+
+    return res.json(leaderboard);
+  });
+
   const handleAction = async (
     transition: string,
     schema: ActionSchema,
@@ -129,12 +143,6 @@ const main = async () => {
     const { transition } = req.params;
     const schema = stfSchemaMap[transition];
 
-    // TEMPORARY
-    // const { inputs } = req.body;
-    // const signature = await signMessage(wallet, schema, inputs);
-    // const msgSender = wallet.address;
-
-    // FINAL
     const { inputs, signature, msgSender } = req.body;
 
     try {

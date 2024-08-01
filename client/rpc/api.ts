@@ -15,6 +15,12 @@ const fetchMruInfo = async () => {
   addToStore(StorageKey.MRU_INFO, res);
 };
 
+const fetchLeaderboard = async () => {
+  const response = await fetch(`${API_URL}/leaderboard`);
+  const res = await response.json();
+  addToStore(StorageKey.LEADERBOARD, res);
+};
+
 const submitAction = async (transition: string, inputs: any) => {
   const walletClient = await getWalletClient();
   const mruInfo = getFromStore(StorageKey.MRU_INFO);
@@ -55,5 +61,5 @@ const startGame = async () => {
   return res;
 };
 
-export { endGame, fetchMruInfo, startGame };
+export { endGame, fetchMruInfo, fetchLeaderboard, startGame };
 
