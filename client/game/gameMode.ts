@@ -63,7 +63,6 @@ export class GameMode extends EventSource implements IGameState {
       this.world.gameOverTimer += dt;
 
       if (this.world.gameOverTimer >= WAIT_TIME) {
-        console.log("here:", this.world.score);
         this.trigger("done", this.world);
       }
     }
