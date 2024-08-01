@@ -2,7 +2,7 @@ import { getAddress } from "viem";
 import { addToStore, getFromStore, StorageKey } from "./storage";
 import { getWalletClient } from "./wallet";
 
-const API_URL = "http://localhost:3210";
+const API_URL = "https://api.comets.stf.xyz";
 
 const fetchMruInfo = async () => {
   const response = await fetch(`${API_URL}/info`);
@@ -33,6 +33,7 @@ const submitAction = async (transition: string, inputs: any) => {
     });
   } catch (e) {
     console.error("Error signing message", e);
+    return;
   }
 
   const response = await fetch(`${API_URL}/${transition}`, {
