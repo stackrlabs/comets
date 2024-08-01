@@ -34,11 +34,6 @@ export class AttractMode extends EventSource implements IGameState {
   update(step: number) {
     this.currentMode.update(step);
 
-    // TODO: GET rid of this once reload is fixed
-    if (getFromStore(StorageKey.GAME_ID)) {
-      this.trigger("done");
-    }
-
     if (Key.isAnyPressed()) {
       if (!this.isStarting) {
         this.isStarting = true;
@@ -54,6 +49,8 @@ export class AttractMode extends EventSource implements IGameState {
           })
           .finally(() => {
             this.isStarting = false;
+            // clears the keys to prevent the game from starting again
+            Key.clear();
           });
       }
     }
