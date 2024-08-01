@@ -34,7 +34,7 @@ export class AttractMode extends EventSource implements IGameState {
   update(step: number) {
     this.currentMode.update(step);
 
-    if (Key.isAnyPressed()) {
+    if (Key.isEnterPressed()) {
       if (!this.isStarting) {
         this.isStarting = true;
         startGame()

@@ -108,8 +108,8 @@ export class _Key {
     return this.keys[key];
   }
 
-  isAnyPressed() {
-    return !!Object.values(this.keys).filter((pressed) => pressed).length;
+  isEnterPressed() {
+    return this.keys[13];
   }
 
   isRotateLeft() {
