@@ -15,7 +15,7 @@ import { SlowMoTimer } from "./slowMoTimer";
 import { largeAlien, smallAlien } from "./sounds";
 import { random } from "./util";
 
-const EXTRA_LIFE = 10000;
+const EXTRA_LIFE = 100_000;
 const SHAKE_TIME = 0.5;
 
 let explosionCount = 0;
