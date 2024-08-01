@@ -33,6 +33,7 @@ const submitAction = async (transition: string, inputs: any) => {
     });
   } catch (e) {
     console.error("Error signing message", e);
+    return;
   }
 
   const response = await fetch(`${API_URL}/${transition}`, {
