@@ -347,7 +347,7 @@ export class Draw {
   }
 
   pushStart() {
-    this.screen.draw.text3("push start", this.screen.font.xlarge, (width) => {
+    this.screen.draw.text3("Press Enter", this.screen.font.xlarge, (width) => {
       return {
         x: this.screen.width2 - width / 2,
         y: this.screen.height / 8,
