@@ -82,8 +82,19 @@ const main = async () => {
 
   app.get("/leaderboard", async (_req, res) => {
     const { state } = stateMachine;
-    const topTen = [...state.games]
-      .sort((a, b) => b.score - a.score)
+    const sortedScores = [...state.games].sort((a, b) => b.score - a.score);
+    // make sure to return one entry per player
+    const players = new Set<string>();
+
+    // TODO: store this in app instance later
+    const topTen = sortedScores
+      .filter((game) => {
+        if (players.has(game.player)) {
+          return false;
+        }
+        players.add(game.player);
+        return true;
+      })
       .slice(0, 10);
 
     const leaderboard = topTen.map((game) => ({
