@@ -3,18 +3,18 @@ import * as Hammer from "hammerjs";
 type KeyPressMap = { [key: number]: boolean };
 
 export const Keys = {
-  HYPERSPACE: 32,
+  HYPERSPACE: 17,
   ROTATE_LEFT: 37,
   ROTATE_LEFT_A: 65,
   ROTATE_RIGHT: 39,
   ROTATE_RIGHT_D: 68,
   THRUST: 38,
   THRUST_W: 87,
-  FIRE: 17,
-  DEBUG: 90,
-  PAUSE: 80,
-  GOD: 71,
-  MONITOR_BURN: 66,
+  FIRE: 32,
+  // DEBUG: 90,
+  // PAUSE: 80,
+  // GOD: 71,
+  // MONITOR_BURN: 66,
 };
 
 export class _Key {
