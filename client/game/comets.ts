@@ -42,7 +42,7 @@ export class Comets {
         this.lastScore = world.score;
         if (!this.isSendingTicks) {
           this.isSendingTicks = true;
-          await this.tickRecorder
+          this.tickRecorder
             .sendTicks(this.lastScore)
             .then(() => {
               console.log("Sent ticks");
