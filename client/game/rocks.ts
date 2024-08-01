@@ -2,7 +2,7 @@ import { HEIGHT, OBJECT_SCALE, WIDTH } from "./constants";
 import { Object2D } from "./object2d";
 import { Screen } from "./screen";
 import { largeExplosion, mediumExplosion, smallExplosion } from "./sounds";
-import { random } from "./util";
+import { random, randomFloat } from "./util";
 import { Vector } from "./vector";
 
 export enum RockSize {
@@ -130,9 +130,9 @@ export class Rock extends Object2D {
         break;
     }
 
-    // const rate = randomFloat(.7, 1);
+    const rate = randomFloat(0.7, 1);
     // sound.rate(rate);
-    // sound.play();
+    sound.play();
 
     if (this.size > RockSize.Small) {
       let angle1 = random(this.direction, this.direction + 80);

@@ -1,5 +1,4 @@
 import { IGameState, Rect, VirtualInput } from "../comets";
-import { Achievement } from "./achievement";
 import { Alien, BigAlien, SmallAlien } from "./alien";
 import { Bullet } from "./bullet";
 import { HEIGHT, SHIP_RECT, WIDTH } from "./constants";
@@ -12,7 +11,14 @@ import { Screen } from "./screen";
 import { Ship } from "./ship";
 import { Shockwave } from "./shockwave";
 import { SlowMoTimer } from "./slowMoTimer";
-import { largeAlien, smallAlien } from "./sounds";
+import {
+  alienFire,
+  extraLife,
+  getPowerup,
+  largeAlien,
+  largeExplosion,
+  smallAlien,
+} from "./sounds";
 import { random } from "./util";
 
 const EXTRA_LIFE = 100_000;
@@ -225,7 +231,7 @@ export class World {
 
   shipDestroyed() {
     if (this.ship) {
-      // largeExplosion.play();
+      largeExplosion.play();
       this.createExplosion(this.ship);
       this.addFlash(5);
       this.ship.destroy();
@@ -298,19 +304,19 @@ export class World {
       this.alien = new BigAlien();
     }
 
-    // alienSound.play();
+    alienSound.play();
 
     this.alien.on("expired", () => {
-      // alienFire.stop();
-      // alienSound.stop();
-      // largeExplosion.play();
+      alienFire.stop();
+      alienSound.stop();
+      largeExplosion.play();
       this.alien = null;
       this.alienBullets.forEach((b) => b.destroy());
       this.alienBullets.length = 0;
     });
 
     this.alien.on("fire", (alien, bullet: Bullet) => {
-      // alienFire.play();
+      alienFire.play();
 
       bullet.on("expired", () => {
         this.alienBullets = this.alienBullets.filter((x) => x !== bullet);
@@ -322,21 +328,21 @@ export class World {
 
   // TODO: remove second argument
   addScore(obj: Object2D, name: string) {
-    console.log(obj.score, name);
+    // console.log(obj.score, name);
     this.score += obj.score;
     this.extraLifeScore += obj.score;
 
     if (this.extraLifeScore >= EXTRA_LIFE) {
       this.lives++;
       this.extraLifeScore -= EXTRA_LIFE;
-      // extraLife.play();
+      extraLife.play();
     }
 
     this.addScenery(new ScoreMarker(obj, `${obj.score}`));
   }
 
   addPowerup() {
-    // getPowerup.play();
+    getPowerup.play();
   }
 
   shake() {

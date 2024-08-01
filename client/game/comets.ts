@@ -7,6 +7,7 @@ import { GameMode } from "./gameMode";
 import { Key } from "./keys";
 import { loop } from "./loop";
 import { Screen } from "./screen";
+import { Sound } from "./sounds";
 import { TickRecorder } from "./tickRecorder";
 import { World } from "./world";
 
@@ -35,6 +36,7 @@ export class Comets {
       this.currentMode = this.gameMode;
 
       this.gameMode.on("done", (source, world) => {
+        Sound.off();
         // Send ticks in the form of an action to MRU
         // And wait for C1 to confirm score
         this.lastScore = world.score;

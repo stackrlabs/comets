@@ -34,9 +34,9 @@ export class Thumper {
 
         if (this.thumpBeatTimer >= this.thumpBeat) {
             if (this.lo) {
-                // thumpLo.play();
+                thumpLo.play();
             } else {
-                // thumpHi.play();
+                thumpHi.play();
             }
 
             this.lo = !this.lo;

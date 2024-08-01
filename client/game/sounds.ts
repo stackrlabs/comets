@@ -1,6 +1,5 @@
 declare var require;
 
-
 const VOLUME = 0.5;
 
 let soundOn: boolean = true;
@@ -10,7 +9,7 @@ export const all = [];
 function createSound(options) {
   let count = 0;
 
-  const sound = {
+  let sound = {
     play: () => {},
     stop: () => {},
     volume: () => {},
@@ -18,6 +17,13 @@ function createSound(options) {
     off: () => {},
     _origVolume: 0,
   };
+
+  try {
+    if (window) {
+      const { Howl } = require("howler");
+      sound = new Howl(options);
+    }
+  } catch (e) {}
 
   sound.on("end", () => {
     if (options.max) {
