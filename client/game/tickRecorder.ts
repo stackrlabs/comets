@@ -23,7 +23,7 @@ export class TickRecorder {
       inputMap["isThrust"] = true;
     }
 
-    if (Key.wasRotateLeft) {
+    if (Key.wasRotateLeft()) {
       inputMap["wasRotateLeft"] = true;
     }
 
@@ -31,7 +31,7 @@ export class TickRecorder {
       inputMap["isRotateLeft"] = true;
     }
 
-    if (Key.wasRotateRight) {
+    if (Key.wasRotateRight()) {
       inputMap["wasRotateRight"] = true;
     }
 

@@ -4,11 +4,9 @@ import { removeFromStore, StorageKey } from "../rpc/storage";
 import { getWalletClient } from "../rpc/wallet";
 import { AttractMode } from "./attractMode";
 import { GameMode } from "./gameMode";
-import Global from "./global";
-import { Key, Keys } from "./keys";
+import { Key } from "./keys";
 import { loop } from "./loop";
 import { Screen } from "./screen";
-import { Sound } from "./sounds";
 import { TickRecorder } from "./tickRecorder";
 import { World } from "./world";
 
@@ -53,13 +51,13 @@ export class Comets {
             .finally(() => {
               removeFromStore(StorageKey.GAME_ID);
               this.isSendingTicks = false;
+              console.log("Game over");
               this.init();
               // Reload page
               window.location.reload();
             });
         }
         // restart in attract mode
-        console.log("Game over");
       });
     };
 
@@ -70,32 +68,6 @@ export class Comets {
   }
 
   update(dt) {
-    if (Key.wasPressed(Keys.GOD)) {
-      Global.god = !Global.god;
-    }
-
-    if (Key.wasPressed(Keys.DEBUG)) {
-      Global.debug = !Global.debug;
-    }
-
-    if (Key.wasPressed(Keys.MONITOR_BURN)) {
-      Global.burn = !Global.burn;
-    }
-
-    if (Key.wasPressed(Keys.PAUSE)) {
-      Global.paused = !Global.paused;
-
-      if (Global.paused) {
-        Sound.off();
-      } else {
-        Sound.on();
-      }
-    }
-
-    if (Global.paused) {
-      return;
-    }
-
     const gameInputs = this.tickRecorder.collectInputs();
 
     // We only record ticks in game mode

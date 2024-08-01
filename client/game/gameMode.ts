@@ -18,6 +18,8 @@ export const ACTIONS = [
   "wasHyperspace",
 ];
 
+const WAIT_TIME = 5;
+
 export class GameMode extends EventSource implements IGameState {
   bounds: Object2D[] = [];
   thumper: Thumper;
@@ -53,7 +55,7 @@ export class GameMode extends EventSource implements IGameState {
     if (this.world.gameOver) {
       this.world.gameOverTimer += dt;
 
-      if (this.world.gameOverTimer >= 5) {
+      if (this.world.gameOverTimer >= WAIT_TIME) {
         this.trigger("done", this.world);
       }
     }
