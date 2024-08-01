@@ -61,5 +61,5 @@ const startGame = async () => {
   return res;
 };
 
-export { endGame, fetchMruInfo, fetchLeaderboard, startGame };
+export { endGame, fetchLeaderboard, fetchMruInfo, startGame };
 

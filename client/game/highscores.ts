@@ -2,9 +2,7 @@ import { fetchLeaderboard } from "../rpc/api";
 import { getFromStore, StorageKey } from "../rpc/storage";
 
 class Highscores {
-  constructor() {
-    fetchLeaderboard();
-  }
+  constructor() {}
 
   get scores(): { score: number; address: string }[] {
     const data = getFromStore(StorageKey.LEADERBOARD);

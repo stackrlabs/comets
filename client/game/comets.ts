@@ -40,10 +40,12 @@ export class Comets {
         // And wait for C1 to confirm score
         this.lastScore = world.score;
         if (!this.isSendingTicks) {
+          this.isSendingTicks = true;
           this.tickRecorder
             .sendTicks(this.lastScore)
             .then(() => {
               console.log("Sent ticks");
+              this.init();
             })
             .catch((e) => {
               console.error("Error sending ticks", e.message);
@@ -53,7 +55,6 @@ export class Comets {
             });
         }
         // restart in attract mode
-        this.init();
         console.log("Game over");
       });
     };
