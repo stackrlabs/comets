@@ -18,14 +18,22 @@ export const ACTIONS = [
   "wasHyperspace",
 ];
 
+const WAIT_TIME = 5;
+
 export class GameMode extends EventSource implements IGameState {
   bounds: Object2D[] = [];
   thumper: Thumper;
+  tickRecorder = {
+    recordInputs: (ticks) => {},
+  };
 
   private lastCollisions: Collisions;
 
-  constructor(private world: World) {
+  constructor(private world: World, tickRecorder) {
     super();
+    if (tickRecorder) {
+      this.tickRecorder = tickRecorder;
+    }
   }
 
   init() {
@@ -44,6 +52,7 @@ export class GameMode extends EventSource implements IGameState {
   }
 
   update(dt: number, inputs?: VirtualInput) {
+    this.tickRecorder.recordInputs(inputs);
     this.world.levelTimer += dt;
 
     if (this.thumper && this.world.ship) {
@@ -53,7 +62,7 @@ export class GameMode extends EventSource implements IGameState {
     if (this.world.gameOver) {
       this.world.gameOverTimer += dt;
 
-      if (this.world.gameOverTimer >= 5) {
+      if (this.world.gameOverTimer >= WAIT_TIME) {
         this.trigger("done", this.world);
       }
     }

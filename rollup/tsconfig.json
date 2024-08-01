@@ -23,10 +23,9 @@
     ]
   },
   "include": [
-    "./**/*.ts",
-    "*.ts",
     "deployment.json",
     "stackr.config.ts",
-    "genesis-state.json"
+    "genesis-state.json",
+    "stackr/*.ts"
   ]
 }

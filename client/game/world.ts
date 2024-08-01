@@ -166,27 +166,28 @@ export class World {
     if (explosionCount > maxExplosionCount) {
       maxExplosionCount = explosionCount;
 
-      if (maxExplosionCount > maxExplosionThreshold) {
-        explosionCount = 0;
-        console.log("MAX DAMAGE ACHEIVEMENT");
+      // TODO: this was exploding the game
+      // if (maxExplosionCount > maxExplosionThreshold) {
+      //   explosionCount = 0;
+      //   console.log("MAX DAMAGE ACHEIVEMENT");
 
-        this.setSlowMo(0.25, 4);
+      //   this.setSlowMo(0.25, 4);
 
-        let bonus = 0;
-        explosionScores.forEach((v) => (bonus += v));
-        bonus *= 5;
+      //   let bonus = 0;
+      //   explosionScores.forEach((v) => (bonus += v));
+      //   bonus *= 5;
 
-        const achievement = new Achievement(`MASSIVE DAMAGE`, bonus);
-        this.addScenery(achievement);
-        this.addScore(achievement, "achievement");
+      //   const achievement = new Achievement(`MASSIVE DAMAGE`, bonus);
+      //   this.addScenery(achievement);
+      //   this.addScore(achievement, "achievement");
 
-        //const marker = new ScoreMarker(obj, `+${bonus}`);
-        //this.addScenery(marker);
+      //   //const marker = new ScoreMarker(obj, `+${bonus}`);
+      //   //this.addScenery(marker);
 
-        // Track score of each explosion and display total points with achievement
+      //   // Track score of each explosion and display total points with achievement
 
-        maxExplosionThreshold += 10;
-      }
+      //   maxExplosionThreshold += 10;
+      // }
     }
 
     explosion.on("expired", () => {

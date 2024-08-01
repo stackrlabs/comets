@@ -17,7 +17,7 @@ export type ValidateGameInput = {
 const startGame: STF<AppState, ValidateGameInput> = {
   handler: ({ state, msgSender, block, emit }) => {
     const gameId = hashMessage(
-      `${msgSender}::${block.timestamp}::${state.games.length}`
+      `${msgSender}::${block.timestamp}::${Object.keys(state.games).length}`
     );
 
     state.games[gameId] = {
@@ -51,7 +51,7 @@ const endGame: STF<AppState, ValidateGameInput> = {
       throw new Error("Unauthorized to end game");
     }
 
-    const world = new World(0);
+    const world = new World();
     const gameMode = new GameMode(world);
     for (const t of gameInputs) {
       gameMode.deserializeAndUpdate(1 / 60, t);

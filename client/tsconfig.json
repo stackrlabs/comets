@@ -5,7 +5,8 @@
         "removeComments": true,
         "sourceMap": true
     },
-    "exclude": [
-        "rollup/**"
+    "include": [
+        "game/*.ts",
+        "rpc/*.ts"
     ]
 }
