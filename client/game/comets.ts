@@ -46,6 +46,7 @@ export class Comets {
             .sendTicks(this.lastScore)
             .then(() => {
               console.log("Sent ticks");
+              this.init();
             })
             .catch((e) => {
               console.error("Error sending ticks", e.message);
