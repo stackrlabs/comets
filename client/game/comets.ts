@@ -1,5 +1,6 @@
 import { IGameState } from "../comets";
 import { fetchLeaderboard, fetchMruInfo } from "../rpc/api";
+import { removeFromStore, StorageKey } from "../rpc/storage";
 import { getWalletClient } from "../rpc/wallet";
 import { AttractMode } from "./attractMode";
 import { GameMode } from "./gameMode";
@@ -41,17 +42,20 @@ export class Comets {
         this.lastScore = world.score;
         if (!this.isSendingTicks) {
           this.isSendingTicks = true;
-          this.tickRecorder
+          await this.tickRecorder
             .sendTicks(this.lastScore)
             .then(() => {
               console.log("Sent ticks");
-              this.init();
             })
             .catch((e) => {
               console.error("Error sending ticks", e.message);
             })
             .finally(() => {
+              removeFromStore(StorageKey.GAME_ID);
               this.isSendingTicks = false;
+              this.init();
+              // Reload page
+              window.location.reload();
             });
         }
         // restart in attract mode
