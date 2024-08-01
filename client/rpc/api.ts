@@ -1,10 +1,5 @@
 import { getAddress } from "viem";
-import {
-  addToStore,
-  getFromStore,
-  removeFromStore,
-  StorageKey,
-} from "./storage";
+import { addToStore, getFromStore, StorageKey } from "./storage";
 import { getWalletClient } from "./wallet";
 
 const API_URL = "http://localhost:3210";
@@ -15,19 +10,30 @@ const fetchMruInfo = async () => {
   addToStore(StorageKey.MRU_INFO, res);
 };
 
+const fetchLeaderboard = async () => {
+  const response = await fetch(`${API_URL}/leaderboard`);
+  const res = await response.json();
+  addToStore(StorageKey.LEADERBOARD, res);
+};
+
 const submitAction = async (transition: string, inputs: any) => {
   const walletClient = await getWalletClient();
   const mruInfo = getFromStore(StorageKey.MRU_INFO);
   const { domain, schemas } = mruInfo;
   const msgSender = getAddress(walletClient.account.address);
 
-  const signature = await walletClient.signTypedData({
-    domain,
-    primaryType: schemas[transition].primaryType,
-    types: schemas[transition].types,
-    message: inputs,
-    account: msgSender,
-  });
+  let signature;
+  try {
+    signature = await walletClient.signTypedData({
+      domain,
+      primaryType: schemas[transition].primaryType,
+      types: schemas[transition].types,
+      message: inputs,
+      account: msgSender,
+    });
+  } catch (e) {
+    console.error("Error signing message", e);
+  }
 
   const response = await fetch(`${API_URL}/${transition}`, {
     method: "POST",
@@ -46,7 +52,6 @@ const submitAction = async (transition: string, inputs: any) => {
 
 const endGame = async (inputs: any) => {
   await submitAction("endGame", inputs);
-  removeFromStore(StorageKey.GAME_ID);
 };
 
 const startGame = async () => {
@@ -55,5 +60,5 @@ const startGame = async () => {
   return res;
 };
 
-export { endGame, fetchMruInfo, startGame };
+export { endGame, fetchLeaderboard, fetchMruInfo, startGame };
 

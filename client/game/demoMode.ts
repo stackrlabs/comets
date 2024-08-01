@@ -76,7 +76,8 @@ export class DemoMode implements IGameState {
     screen.draw.background();
     screen.draw.scorePlayer1(this.world.score);
     screen.draw.oneCoinOnePlay();
-    screen.draw.highscore(this.world.highscore);
+    // screen.draw.highscore(this.world.highscore);
+    screen.draw.stackr();
     screen.draw.copyright();
   }
 

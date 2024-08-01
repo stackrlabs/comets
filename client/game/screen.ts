@@ -29,6 +29,7 @@ export class Screen implements Rect {
         this.init();
 
         window.addEventListener('resize', () => {
+            console.log("resizing");
             this.init();
         });
     }

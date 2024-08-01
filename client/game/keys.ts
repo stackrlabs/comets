@@ -91,6 +91,11 @@ export class _Key {
     this.touched = !this.touched;
   }
 
+  clear() {
+    this.keys = {};
+    this.prev = {};
+  }
+
   isPressed(key: number) {
     return this.prev[key] === false && this.keys[key] === true;
   }

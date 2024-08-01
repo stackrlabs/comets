@@ -328,6 +328,15 @@ export class Draw {
     });
   }
 
+  stackr() {
+    this.text2("Stackr", this.screen.font.small, (width) => {
+      return {
+        x: this.screen.width2 - width / 2,
+        y: Y_START,
+      };
+    });
+  }
+
   oneCoinOnePlay() {
     this.text2("1  coin  1  play", this.screen.font.medium, (width) => {
       return {

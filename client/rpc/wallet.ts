@@ -1,6 +1,7 @@
 import { createWalletClient, custom, WalletClient } from "viem";
 import { sepolia } from "viem/chains";
 import { getFromStore, StorageKey } from "./storage";
+
 let walletClient: any;
 
 const addChainIfMissing = async (walletClient: WalletClient) => {
