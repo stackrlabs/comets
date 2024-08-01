@@ -5,6 +5,7 @@ import { EventSource } from "./events";
 import Global from "./global";
 import { Object2D } from "./object2d";
 import { Screen } from "./screen";
+import { Sound } from "./sounds";
 import { Thumper } from "./thump";
 import { World } from "./world";
 
@@ -37,6 +38,7 @@ export class GameMode extends EventSource implements IGameState {
   }
 
   init() {
+    Sound.on();
     this.world.addShip(WIDTH / 2, HEIGHT / 2);
     this.world.startLevel();
     this.thumper = new Thumper();

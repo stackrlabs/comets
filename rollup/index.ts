@@ -63,9 +63,9 @@ const main = async () => {
     return res.json(state);
   });
 
-  app.get("/info", (_req: Request, res: Response) => {
+  app.get("/info", (_, res) => {
     const transitionToSchema = mru.getStfSchemaMap();
-    res.send({
+    return res.send({
       rpcUrls: [mru.config.L1RPC],
       signingInstructions: "signTypedData(domain, schema.types, inputs)",
       domain: mru.config.domain,
