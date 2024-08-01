@@ -17,7 +17,7 @@ export type ValidateGameInput = {
 const startGame: STF<AppState, ValidateGameInput> = {
   handler: ({ state, msgSender, block, emit }) => {
     const gameId = hashMessage(
-      `${msgSender}::${block.timestamp}::${state.games}`
+      `${msgSender}::${block.timestamp}::${state.games.length}`
     );
 
     state.games[gameId] = {

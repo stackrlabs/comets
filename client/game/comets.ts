@@ -64,7 +64,7 @@ export class Comets {
     };
 
     this.attractMode.on("done", () => {
-      console.log("Done with Attract Mode");
+      console.log("Start Game");
       setGameMode();
     });
   }
