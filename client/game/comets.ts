@@ -30,17 +30,17 @@ export class Comets {
     this.tickRecorder = new TickRecorder();
 
     const setGameMode = () => {
-      this.gameMode = new GameMode(new World());
-      this.currentMode = this.gameMode;
       this.tickRecorder.reset();
+      this.gameMode = new GameMode(new World(), this.tickRecorder);
+      this.currentMode = this.gameMode;
 
-      this.gameMode.on("done", async (source, world) => {
+      this.gameMode.on("done", (source, world) => {
         // Send ticks in the form of an action to MRU
         // And wait for C1 to confirm score
         this.lastScore = world.score;
         if (!this.isSendingTicks) {
           this.isSendingTicks = true;
-          await this.tickRecorder
+          this.tickRecorder
             .sendTicks(this.lastScore)
             .then(() => {
               console.log("Sent ticks");
@@ -69,12 +69,6 @@ export class Comets {
 
   update(dt) {
     const gameInputs = this.tickRecorder.collectInputs();
-
-    // We only record ticks in game mode
-    if (this.currentMode === this.gameMode) {
-      this.tickRecorder.recordInputs(gameInputs);
-    }
-
     this.currentMode.update(dt, gameInputs);
   }
 
