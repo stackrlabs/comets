@@ -66,7 +66,7 @@ export class TickRecorder {
       gameId: getFromStore(StorageKey.GAME_ID),
       timestamp: Date.now(),
       score,
-      ticks: this.serializedTicks(),
+      gameInputs: this.serializedTicks(),
     };
 
     await endGame(payload);

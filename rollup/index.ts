@@ -6,9 +6,8 @@ import {
 } from "@stackr/sdk";
 import { HDNodeWallet, Wallet } from "ethers";
 import express from "express";
-import { readFileSync } from "fs";
 import { stackrConfig } from "./stackr.config";
-import { StartGameSchema, EndGameSchema } from "./stackr/action";
+import { EndGameSchema, StartGameSchema } from "./stackr/action";
 import { machine, MACHINE_ID } from "./stackr/machine";
 
 const PORT = process.env.PORT || 3210;
@@ -38,36 +37,6 @@ const mru = await MicroRollup({
   stateMachines: [machine],
   stfSchemaMap,
 });
-
-const notMain = async () => {
-  await mru.init();
-
-  const filePath = "./ticks.json";
-  let jsonData;
-  try {
-    const data = readFileSync(filePath, "utf8");
-    jsonData = JSON.parse(data);
-  } catch (error) {
-    console.error("Error reading or parsing the file:", error);
-    return null;
-  }
-
-  console.log("Found", jsonData.keypresses.length, "ticks");
-  const inputs = {
-    gameId: 1,
-    ...jsonData,
-  };
-
-  const signature = await signMessage(wallet, EndGameSchema, inputs);
-  const incrementAction = EndGameSchema.actionFrom({
-    inputs,
-    signature,
-    msgSender: wallet.address,
-  });
-
-  const ack = await mru.submitAction("endGame", incrementAction);
-  // console.log(ack);
-};
 
 const main = async () => {
   await mru.init();
@@ -167,5 +136,3 @@ const main = async () => {
 };
 
 main();
-
-// notMain();

@@ -11,7 +11,7 @@ export type CreateGame = {
 export type ValidateGameInput = {
   gameId: number;
   score: number;
-  ticks: { v: string }[];
+  gameInputs: { v: string }[];
 };
 
 const startGame: STF<AppState, ValidateGameInput> = {
@@ -37,7 +37,7 @@ const startGame: STF<AppState, ValidateGameInput> = {
 
 const endGame: STF<AppState, ValidateGameInput> = {
   handler: ({ state, inputs, msgSender }) => {
-    const { ticks, gameId, score } = inputs;
+    const { gameInputs, gameId, score } = inputs;
     const { games } = state;
     if (!games[gameId]) {
       throw new Error("Game not found");
@@ -53,7 +53,7 @@ const endGame: STF<AppState, ValidateGameInput> = {
 
     const world = new World(0);
     const gameMode = new GameMode(world);
-    for (const t of ticks) {
+    for (const t of gameInputs) {
       gameMode.deserializeAndUpdate(1 / 60, t);
     }
 
