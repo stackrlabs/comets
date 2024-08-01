@@ -328,7 +328,7 @@ export class World {
 
   // TODO: remove second argument
   addScore(obj: Object2D, name: string) {
-    console.log(obj.score, name);
+    // console.log(obj.score, name);
     this.score += obj.score;
     this.extraLifeScore += obj.score;
 
