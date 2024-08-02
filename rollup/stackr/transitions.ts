@@ -4,26 +4,26 @@ import { ACTIONS, GameMode } from "../../client/game/gameMode";
 import { World } from "../../client/game/world";
 import { AppState } from "./machine";
 
-export type CreateGame = {
+export type StartGameInput = {
   timestamp: number;
 };
 
-export type ValidateGameInput = {
-  gameId: number;
+export type EndGameInput = {
+  gameId: string;
+  timestamp: number;
   score: number;
   gameInputs: string;
 };
 
-const startGame: STF<AppState, ValidateGameInput> = {
+const startGame: STF<AppState, StartGameInput> = {
   handler: ({ state, msgSender, block, emit }) => {
     const gameId = hashMessage(
       `${msgSender}::${block.timestamp}::${Object.keys(state.games).length}`
     );
 
     state.games[gameId] = {
-      id: gameId,
       score: 0,
-      player: msgSender,
+      player: msgSender.toString(),
     };
 
     emit({
@@ -34,14 +34,14 @@ const startGame: STF<AppState, ValidateGameInput> = {
   },
 };
 
-const endGame: STF<AppState, ValidateGameInput> = {
+const endGame: STF<AppState, EndGameInput> = {
   handler: ({ state, inputs, msgSender }) => {
     const { gameInputs, gameId, score } = inputs;
     const { games } = state;
     // validation checks
     REQUIRE(!!games[gameId], "GAME_NOT_FOUND");
     REQUIRE(games[gameId].score === 0, "GAME_ALREADY_ENDED");
-    REQUIRE(game[gameId].player === msgSender.toString(), "UNAUTHORIZED");
+    REQUIRE(games[gameId].player === msgSender.toString(), "UNAUTHORIZED");
     // rerun game loop
     const world = new World();
     const gameMode = new GameMode(world, { gameId });
@@ -55,7 +55,7 @@ const endGame: STF<AppState, ValidateGameInput> = {
 
     REQUIRE(
       world.score === score,
-      `Failed to replay: ${world.score} !== ${score}`
+      `FAILED_TO_REPLAY: ${world.score} !== ${score}`
     );
 
     games[gameId].score = score;

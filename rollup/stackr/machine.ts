@@ -25,14 +25,13 @@ export class AppState extends State<RawState, WrappedState> {
   transformer() {
     return {
       wrap: () => {
-        const games = this.state.games.reduce((acc, game) => {
+        const games = this.state.games.reduce<WrappedState['games']>((acc, game) => {
           const { id, ...rest } = game;
           acc[id] = { ...rest };
           return acc;
         }, {});
         return { games };
       },
-
       unwrap: (wrappedState: WrappedState) => {
         const games = Object.keys(wrappedState.games).map((id) => ({
           id,
@@ -45,7 +44,7 @@ export class AppState extends State<RawState, WrappedState> {
   }
 
   getRootHash(): string {
-    const leaves = Object.values(this.state.games).map(
+    const leaves = this.state.games.map(
       ({ id, player, score }) =>
         solidityPacked(["string", "address", "uint256"], [id, player, score])
     );
