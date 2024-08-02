@@ -154,7 +154,7 @@ const getEnsName = async (address: string) => {
   if (ensCache.has(address)) {
     return ensCache.get(address);
   }
-  const name = await getDefaultProvider()
+  const name = await getDefaultProvider(process.env.ETH_RPC_URL)
     .lookupAddress(address)
     .then((name) => {
       ensCache.set(address, name);
