@@ -24,7 +24,6 @@ const startGame: STF<AppState, ValidateGameInput> = {
       id: gameId,
       score: 0,
       player: msgSender,
-      isEnded: false,
     };
 
     emit({
@@ -43,7 +42,7 @@ const endGame: STF<AppState, ValidateGameInput> = {
       throw new Error("Game not found");
     }
 
-    if (games[gameId].isEnded) {
+    if (games[gameId].score > 0) {
       throw new Error("Game already ended");
     }
 
@@ -66,7 +65,6 @@ const endGame: STF<AppState, ValidateGameInput> = {
     }
 
     games[gameId].score = score;
-    games[gameId].isEnded = true;
 
     return state;
   },
