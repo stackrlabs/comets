@@ -62,8 +62,12 @@ export class HighScoreMode implements IGameState {
       const text = `${this.pad(i + 1, " ", 2)}.${this.pad(
         formatAddress(Highscores.scores[i].address),
         " ",
-        6
-      )} ${this.pad(Highscores.scores[i].score, " ", 8)}`;
+        13
+      )} ${this.pad("", " ", 2)} ${this.pad(
+        Highscores.scores[i].score,
+        " ",
+        8
+      )}`;
 
       screen.draw.text2(text, screen.font.large, (width) => {
         return {
