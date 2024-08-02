@@ -52,7 +52,7 @@ const endGame: STF<AppState, ValidateGameInput> = {
     }
 
     const world = new World();
-    const gameMode = new GameMode(world);
+    const gameMode = new GameMode(world, { gameId });
     const ticks = gameInputs
       .split(",")
       .map((tick) => Number(tick).toString(2).padStart(ACTIONS.length, "0"));

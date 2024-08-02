@@ -7,6 +7,7 @@ import { Object2D } from "./object2d";
 import { Screen } from "./screen";
 import { Sound } from "./sounds";
 import { Thumper } from "./thump";
+import { updateSeed } from "./util";
 import { World } from "./world";
 
 export const ACTIONS = [
@@ -20,21 +21,32 @@ export const ACTIONS = [
 ];
 
 const WAIT_TIME = 5;
-
+type Options = {
+  gameId?: string;
+  tickRecorder?: {
+    recordInputs: (ticks) => void;
+  };
+};
 export class GameMode extends EventSource implements IGameState {
   bounds: Object2D[] = [];
   thumper: Thumper;
-  tickRecorder = {
-    recordInputs: (ticks) => {},
-  };
 
   private lastCollisions: Collisions;
+  options: Options;
 
-  constructor(private world: World, tickRecorder?: any) {
+  constructor(private world: World, options?: Options) {
     super();
-    if (tickRecorder) {
-      this.tickRecorder = tickRecorder;
+    this.options = {
+      tickRecorder: {
+        recordInputs: () => {},
+      },
+      gameId: options?.gameId,
+    };
+
+    if (options?.tickRecorder) {
+      this.options.tickRecorder = options.tickRecorder;
     }
+    updateSeed(this.options.gameId);
   }
 
   init() {
@@ -54,7 +66,7 @@ export class GameMode extends EventSource implements IGameState {
   }
 
   update(dt: number, inputs?: VirtualInput) {
-    this.tickRecorder.recordInputs(inputs);
+    this.options.tickRecorder.recordInputs(inputs);
     this.world.levelTimer += dt;
 
     if (this.thumper && this.world.ship) {

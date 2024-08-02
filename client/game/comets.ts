@@ -1,6 +1,6 @@
 import { IGameState } from "../comets";
 import { fetchLeaderboard, fetchMruInfo } from "../rpc/api";
-import { removeFromStore, StorageKey } from "../rpc/storage";
+import { getFromStore, removeFromStore, StorageKey } from "../rpc/storage";
 import { getWalletClient } from "../rpc/wallet";
 import { AttractMode } from "./attractMode";
 import { GameMode } from "./gameMode";
@@ -30,9 +30,13 @@ export class Comets {
     this.currentMode = this.attractMode;
     this.tickRecorder = new TickRecorder();
 
-    const setGameMode = () => {
+    const setGameMode = (gameId: string) => {
       this.tickRecorder.reset();
-      this.gameMode = new GameMode(new World(), this.tickRecorder);
+      this.gameMode = new GameMode(new World(), {
+        tickRecorder: this.tickRecorder,
+        gameId,
+      });
+
       this.currentMode = this.gameMode;
 
       this.gameMode.on("done", (source, world) => {
@@ -65,7 +69,7 @@ export class Comets {
 
     this.attractMode.on("done", () => {
       console.log("Start Game");
-      setGameMode();
+      setGameMode(getFromStore(StorageKey.GAME_ID));
     });
   }
 
