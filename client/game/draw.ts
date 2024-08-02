@@ -1,8 +1,8 @@
+import { IQuadtree, Point, Rect } from "../comets";
+import Global from "./global";
 import { Screen } from "./screen";
 import { Ship } from "./ship";
 import { random } from "./util";
-import Global from "./global";
-import { Point, Rect, IQuadtree } from "../comets";
 
 const VectorLine = "rgba(255,255,255,.8)";
 const TextColor = "rgba(255,255,255,.8)";

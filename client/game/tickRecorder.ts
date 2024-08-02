@@ -7,14 +7,13 @@ import { ACTIONS } from "./gameMode";
 export class TickRecorder {
   public ticks: VirtualInput[] = [];
 
-  serializedTicks(): { v: string }[] {
-    return this.ticks.map((input) => {
-      return {
-        v: ACTIONS.map((action) => {
-          return input[action] ? "1" : "0";
-        }).join(""),
-      };
-    });
+  serializedTicks(): string {
+    return this.ticks
+      .map((input) => {
+        return ACTIONS.map((action) => (input[action] ? "1" : "0"));
+      })
+      .map((tick) => parseInt(tick.join(""), 2))
+      .join(",");
   }
 
   public collectInputs(): VirtualInput {

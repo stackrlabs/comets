@@ -6,7 +6,6 @@ import { transitions } from "./transitions";
 interface GameState {
   score: number;
   player: string;
-  isEnded: boolean;
 }
 
 interface RawState {
@@ -38,7 +37,6 @@ export class AppState extends State<RawState, WrappedState> {
           id,
           score: wrappedState.games[id].score,
           player: wrappedState.games[id].player,
-          isEnded: wrappedState.games[id].isEnded,
         }));
         return { games };
       },

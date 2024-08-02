@@ -8,9 +8,5 @@ export const EndGameSchema = new ActionSchema("endGame", {
   gameId: SolidityType.UINT,
   timestamp: SolidityType.UINT, // nonce
   score: SolidityType.UINT,
-  gameInputs: [
-    {
-      v: SolidityType.STRING,
-    },
-  ],
+  gameInputs: SolidityType.STRING,
 });
