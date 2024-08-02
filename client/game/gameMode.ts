@@ -30,7 +30,7 @@ export class GameMode extends EventSource implements IGameState {
 
   private lastCollisions: Collisions;
 
-  constructor(private world: World, tickRecorder) {
+  constructor(private world: World, tickRecorder?: any) {
     super();
     if (tickRecorder) {
       this.tickRecorder = tickRecorder;
@@ -44,8 +44,8 @@ export class GameMode extends EventSource implements IGameState {
     this.thumper = new Thumper();
   }
 
-  deserializeAndUpdate(dt: number, input: { v: string }) {
-    const vi = input.v.split("").reduce((acc, action, index) => {
+  deserializeAndUpdate(dt: number, input: string) {
+    const vi = input.split("").reduce((acc, action, index) => {
       acc[ACTIONS[index]] = action === "1";
       return acc;
     }, {});

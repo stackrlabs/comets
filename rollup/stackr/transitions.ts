@@ -1,6 +1,6 @@
 import { STF, Transitions } from "@stackr/sdk/machine";
 import { hashMessage } from "ethers";
-import { GameMode } from "../../client/game/gameMode";
+import { ACTIONS, GameMode } from "../../client/game/gameMode";
 import { World } from "../../client/game/world";
 import { AppState } from "./machine";
 
@@ -11,7 +11,7 @@ export type CreateGame = {
 export type ValidateGameInput = {
   gameId: number;
   score: number;
-  gameInputs: { v: string }[];
+  gameInputs: string;
 };
 
 const startGame: STF<AppState, ValidateGameInput> = {
@@ -53,8 +53,12 @@ const endGame: STF<AppState, ValidateGameInput> = {
 
     const world = new World();
     const gameMode = new GameMode(world);
-    for (const t of gameInputs) {
-      gameMode.deserializeAndUpdate(1 / 60, t);
+    const ticks = gameInputs
+      .split(",")
+      .map((tick) => Number(tick).toString(2).padStart(ACTIONS.length, "0"));
+
+    for (let i = 0; i < ticks.length; i++) {
+      gameMode.deserializeAndUpdate(1 / 60, ticks[i]);
     }
 
     if (world.score !== score) {
