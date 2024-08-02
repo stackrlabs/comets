@@ -1,4 +1,4 @@
-import { STF, Transitions } from "@stackr/sdk/machine";
+import { REQUIRE, STF, Transitions } from "@stackr/sdk/machine";
 import { hashMessage } from "ethers";
 import { ACTIONS, GameMode } from "../../client/game/gameMode";
 import { World } from "../../client/game/world";
@@ -38,18 +38,11 @@ const endGame: STF<AppState, ValidateGameInput> = {
   handler: ({ state, inputs, msgSender }) => {
     const { gameInputs, gameId, score } = inputs;
     const { games } = state;
-    if (!games[gameId]) {
-      throw new Error("Game not found");
-    }
-
-    if (games[gameId].score > 0) {
-      throw new Error("Game already ended");
-    }
-
-    if (games[gameId].player !== msgSender) {
-      throw new Error("Unauthorized to end game");
-    }
-
+    // validation checks
+    REQUIRE(!!games[gameId], "GAME_NOT_FOUND");
+    REQUIRE(games[gameId].score === 0, "GAME_ALREADY_ENDED");
+    REQUIRE(game[gameId].player === msgSender.toString(), "UNAUTHORIZED");
+    // rerun game loop
     const world = new World();
     const gameMode = new GameMode(world, { gameId });
     const ticks = gameInputs
@@ -60,9 +53,10 @@ const endGame: STF<AppState, ValidateGameInput> = {
       gameMode.deserializeAndUpdate(1 / 60, ticks[i]);
     }
 
-    if (world.score !== score) {
-      throw new Error(`Failed to replay: ${world.score} !== ${score}`);
-    }
+    REQUIRE(
+      world.score === score,
+      `Failed to replay: ${world.score} !== ${score}`
+    );
 
     games[gameId].score = score;
 
