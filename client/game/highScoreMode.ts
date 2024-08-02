@@ -1,8 +1,14 @@
 import { IGameState } from "../comets";
 import { Highscores } from "./highscores";
 import { Screen } from "./screen";
+import { isAddress } from "viem";
+
 const formatAddress = (address: string) => {
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  if (isAddress(address)) {
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  }
+  // Is an ENS name then
+  return address.padEnd(14, " ");
 };
 
 export class HighScoreMode implements IGameState {

@@ -4,7 +4,7 @@ import {
   AllowedInputTypes,
   MicroRollup,
 } from "@stackr/sdk";
-import { HDNodeWallet, Wallet } from "ethers";
+import { HDNodeWallet, Wallet, getDefaultProvider } from "ethers";
 import express from "express";
 import { stackrConfig } from "./stackr.config";
 import { EndGameSchema, StartGameSchema } from "./stackr/action";
@@ -97,10 +97,12 @@ const main = async () => {
       })
       .slice(0, 10);
 
-    const leaderboard = topTen.map((game) => ({
-      address: game.player,
-      score: game.score,
-    }));
+    const leaderboard = await Promise.all(
+      topTen.map(async (game) => ({
+        address: (await getEnsName(game.player)) || game.player,
+        score: game.score,
+      }))
+    );
 
     return res.json(leaderboard);
   });
@@ -144,6 +146,22 @@ const main = async () => {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
+};
+
+const ensCache = new Map<string, string | null>();
+
+const getEnsName = async (address: string) => {
+  if (ensCache.has(address)) {
+    return ensCache.get(address);
+  }
+  const name = await getDefaultProvider()
+    .lookupAddress(address)
+    .then((name) => {
+      ensCache.set(address, name);
+      return name;
+    })
+    .catch(() => null);
+  return name;
 };
 
 main();
