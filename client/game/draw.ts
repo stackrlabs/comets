@@ -8,7 +8,6 @@ const VectorLine = "rgba(255,255,255,.8)";
 const TextColor = "rgba(255,255,255,.8)";
 const Y_START = 20;
 const DefaultLineWidth = 2;
-const CR = String.fromCharCode(169);
 
 export function magenta(opacity: number = 1) {
   return `rgba(255,0,255, ${opacity})`;
@@ -328,8 +327,8 @@ export class Draw {
     });
   }
 
-  stackr() {
-    this.text2("Stackr", this.screen.font.small, (width) => {
+  gameTitle() {
+    this.text2("Comets", this.screen.font.small, (width) => {
       return {
         x: this.screen.width2 - width / 2,
         y: Y_START,
@@ -373,8 +372,8 @@ export class Draw {
     });
   }
 
-  copyright() {
-    this.text2(CR + " 1979 atari inc", this.screen.font.small, (width) => {
+  stackr() {
+    this.text2("Powered by Stackr Labs", this.screen.font.small, (width) => {
       return {
         x: this.screen.width2 - width / 2,
         y: this.screen.height - this.screen.font.small,

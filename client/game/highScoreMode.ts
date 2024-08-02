@@ -37,7 +37,7 @@ export class HighScoreMode implements IGameState {
     screen.draw.stackr();
     screen.draw.scorePlayer1(this.score);
     screen.draw.oneCoinOnePlay();
-    screen.draw.copyright();
+    screen.draw.gameTitle();
   }
 
   private drawHighScores(screen: Screen) {
