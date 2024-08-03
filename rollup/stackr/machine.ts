@@ -1,6 +1,6 @@
 import { State, StateMachine } from "@stackr/sdk/machine";
-import { merklize } from "@stackr/sdk";
-import { solidityPacked } from "ethers";
+import { keccak256, solidityPackedKeccak256 } from "ethers";
+import MerkleTree from "merkletreejs";
 import genesisState from "../genesis-state.json";
 import { transitions } from "./transitions";
 
@@ -46,9 +46,10 @@ export class AppState extends State<RawState, WrappedState> {
   getRootHash(): string {
     const leaves = this.state.games.map(
       ({ id, player, score }) =>
-        solidityPacked(["string", "address", "uint256"], [id, player, score])
+        solidityPackedKeccak256(["string", "address", "uint256"], [id, player, score])
     );
-    return merklize(leaves);
+    const tree = new MerkleTree(leaves, keccak256);
+    return tree.getHexRoot();
   }
 }
 
