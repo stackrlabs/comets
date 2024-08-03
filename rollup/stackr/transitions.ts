@@ -23,7 +23,7 @@ const startGame: STF<AppState, StartGameInput> = {
 
     state.games[gameId] = {
       score: 0,
-      player: msgSender.toString(),
+      player: String(msgSender),
     };
 
     emit({
@@ -41,7 +41,7 @@ const endGame: STF<AppState, EndGameInput> = {
     // validation checks
     REQUIRE(!!games[gameId], "GAME_NOT_FOUND");
     REQUIRE(games[gameId].score === 0, "GAME_ALREADY_ENDED");
-    REQUIRE(games[gameId].player === msgSender.toString(), "UNAUTHORIZED");
+    REQUIRE(games[gameId].player === String(msgSender), "UNAUTHORIZED");
     // rerun game loop
     const world = new World();
     const gameMode = new GameMode(world, { gameId });
