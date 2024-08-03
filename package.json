@@ -1,0 +1,33 @@
+{
+  "name": "comets",
+  "version": "1.0.0",
+  "description": "Comets",
+  "keywords": [
+    "Asteroids",
+    "Game",
+    "Atari",
+    "JavaScript",
+    "TypeScript"
+  ],
+  "main": "comets.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "set NODE_ENV=dev&&webpack --watch"
+  },
+  "author": "J.P. Hamilton",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/hammerjs": "^2.0.41",
+    "file-loader": "^6.2.0",
+    "ts-loader": "9.4.2",
+    "typescript": "^5.0.0",
+    "webpack": "^5.76.0",
+    "webpack-cli": "^5.0.1"
+  },
+  "dependencies": {
+    "hammerjs": "^2.0.8",
+    "howler": "^2.2.4",
+    "viem": "^2.18.6"
+  }
+}
