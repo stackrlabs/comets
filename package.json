@@ -1,7 +1,7 @@
 {
   "name": "comets",
   "scripts": {
-    "build:client": "cd client && npm run build",
+    "build:client": "cd game && npm run build",
     "watch:client": "cd client && npm run watch",
     "start:server": "cd rollup && bun run index.ts"
   }
