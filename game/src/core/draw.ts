@@ -354,13 +354,17 @@ export class Draw {
     });
   }
 
-  player1() {
-    this.screen.draw.text3("player 1", this.screen.font.xlarge, (width) => {
-      return {
-        x: this.screen.width2 - width / 2,
-        y: screen.height / 4.5,
-      };
-    });
+  readyText() {
+    this.screen.draw.text3(
+      "Get Set Shoot",
+      this.screen.font.xlarge,
+      (width) => {
+        return {
+          x: this.screen.width2 - width / 2,
+          y: screen.height / 4.5,
+        };
+      }
+    );
   }
 
   gameOver() {

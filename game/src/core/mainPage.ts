@@ -1,6 +1,4 @@
 import { IGameState } from "../comets";
-import { startGame } from "../rpc/api";
-import { addToStore, StorageKey } from "../rpc/storage";
 import { EventSource } from "./events";
 import { HighScoreMode } from "./highScoreMode";
 import { KeyManager } from "./keys";
@@ -11,12 +9,17 @@ import { Sound } from "./sounds";
 export class MainPage extends EventSource implements IGameState {
   private currentMode: IGameState;
   private modes: IGameState[];
-  private isStarting = false;
   private keyManager: KeyManager;
+  private handleEnterPressed: () => Promise<number | undefined>;
 
-  constructor(keyManager: KeyManager, lastScore: number) {
+  constructor(
+    keyManager: KeyManager,
+    lastScore: number,
+    handleEnterPressed: () => Promise<number | undefined>
+  ) {
     super();
     this.keyManager = keyManager;
+    this.handleEnterPressed = handleEnterPressed;
     this.modes = [new HighScoreMode(lastScore)];
 
     this.currentMode = this.modes[0];
@@ -25,28 +28,14 @@ export class MainPage extends EventSource implements IGameState {
     Sound.off();
   }
 
-  update(step: number) {
+  async update(step: number) {
     this.currentMode.update(step, {});
-
     if (this.keyManager.isEnterPressed()) {
-      if (!this.isStarting) {
-        this.isStarting = true;
-        startGame()
-          .then((res) => {
-            console.log("Game started", res.logs[0].value);
-            addToStore(StorageKey.GAME_ID, res.logs[0].value);
-            this.isStarting = false;
-            this.trigger("done");
-          })
-          .catch((e) => {
-            console.error("Error starting game", e.message);
-          })
-          .finally(() => {
-            this.isStarting = false;
-            // clears the keys to prevent the game from starting again
-            this.keyManager.clear();
-          });
+      const gameId = await this.handleEnterPressed();
+      if (gameId) {
+        this.trigger("done");
       }
+      this.keyManager.clear();
     }
   }
 

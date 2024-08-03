@@ -1,6 +1,4 @@
 import { VirtualInput } from "../comets";
-import { endGame } from "../rpc/api";
-import { getFromStore, StorageKey } from "../rpc/storage";
 import { ACTIONS } from "./gameMode";
 import { KeyManager } from "./keys";
 
@@ -61,17 +59,8 @@ export class TickRecorder {
     this.ticks = [];
   }
 
-  async sendTicks(score: number) {
-    console.log(
-      `Sending ${this.ticks.length} ticks and score ${score} to MRU...`
-    );
-    const payload = {
-      gameId: getFromStore(StorageKey.GAME_ID),
-      timestamp: Date.now(),
-      score,
-      gameInputs: this.serializedTicks(),
-    };
-
-    await endGame(payload);
+  getTicks() {
+    console.debug(`Sending ${this.ticks.length} ticks`);
+    return this.serializedTicks();
   }
 }

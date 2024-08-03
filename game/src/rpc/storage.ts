@@ -2,6 +2,7 @@ export enum StorageKey {
   MRU_INFO = "mru_info",
   GAME_ID = "game_id",
   LEADERBOARD = "leaderboard",
+  LAST_SCORE = "lastScore",
 }
 
 export const addToStore = (key: StorageKey, value: any) => {

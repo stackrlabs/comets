@@ -1,6 +1,4 @@
-import { getAddress } from "viem";
-import { addToStore, getFromStore, StorageKey } from "./storage";
-import { getWalletClient } from "./wallet";
+import { addToStore, StorageKey } from "./storage";
 
 const API_URL = "https://api.comets.stf.xyz";
 
@@ -16,53 +14,16 @@ const fetchLeaderboard = async () => {
   addToStore(StorageKey.LEADERBOARD, res);
 };
 
-const submitAction = async (transition: string, inputs: any) => {
-  const walletClient = await getWalletClient();
-  if (!walletClient?.account) {
-    return;
-  }
-
-  const mruInfo = getFromStore(StorageKey.MRU_INFO);
-  const { domain, schemas } = mruInfo;
-  const msgSender = getAddress(walletClient.account.address);
-
-  let signature;
-  try {
-    signature = await walletClient.signTypedData({
-      domain,
-      primaryType: schemas[transition].primaryType,
-      types: schemas[transition].types,
-      message: inputs,
-      account: msgSender,
-    });
-  } catch (e) {
-    console.error("Error signing message", e);
-    return;
-  }
-
+const submitAction = async (transition: string, payload: any) => {
   const response = await fetch(`${API_URL}/${transition}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      inputs,
-      signature,
-      msgSender,
-    }),
+    body: JSON.stringify(payload),
   });
 
   return response.json();
 };
 
-const endGame = async (inputs: any) => {
-  await submitAction("endGame", inputs);
-};
-
-const startGame = async () => {
-  const inputs = { timestamp: Date.now() };
-  const res = await submitAction("startGame", inputs);
-  return res;
-};
-
-export { endGame, fetchLeaderboard, fetchMruInfo, startGame };
+export { fetchLeaderboard, fetchMruInfo, submitAction };
