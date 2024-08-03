@@ -1,29 +1,33 @@
 import {
   ActionConfirmationStatus,
   ActionSchema,
-  AllowedInputTypes,
   MicroRollup,
 } from "@stackr/sdk";
-import { HDNodeWallet, Wallet, getDefaultProvider } from "ethers";
+import { getDefaultProvider } from "ethers";
 import express from "express";
 import { stackrConfig } from "./stackr.config";
 import { EndGameSchema, StartGameSchema } from "./stackr/action";
 import { machine, MACHINE_ID } from "./stackr/machine";
 
 const PORT = process.env.PORT || 3210;
-const wallet = new Wallet(stackrConfig.operator.accounts[0].privateKey);
 
-const signMessage = async (
-  wallet: HDNodeWallet,
-  schema: ActionSchema,
-  payload: AllowedInputTypes
-) => {
-  const signature = await wallet.signTypedData(
-    schema.domain,
-    schema.EIP712TypedData.types,
-    payload
-  );
-  return signature;
+const ensCache = new Map<string, string>();
+
+const getAddressOrEns = async (address: string) => {
+  if (ensCache.has(address)) {
+    return ensCache.get(address)!;
+  }
+  try {
+    const ens = await getDefaultProvider(process.env.API_URL).lookupAddress(
+      address
+    );
+    const name = ens || address;
+    ensCache.set(address, name);
+    return name;
+  } catch (e) {
+    console.error(e);
+    return address;
+  }
 };
 
 const stfSchemaMap: Record<string, ActionSchema> = {
@@ -99,7 +103,7 @@ const main = async () => {
 
     const leaderboard = await Promise.all(
       topTen.map(async (game) => ({
-        address: (await getEnsName(game.player)) || game.player,
+        address: await getAddressOrEns(game.player),
         score: game.score,
       }))
     );
@@ -148,20 +152,5 @@ const main = async () => {
   });
 };
 
-const ensCache = new Map<string, string | null>();
-
-const getEnsName = async (address: string) => {
-  if (ensCache.has(address)) {
-    return ensCache.get(address);
-  }
-  const name = await getDefaultProvider(process.env.ETH_RPC_URL)
-    .lookupAddress(address)
-    .then((name) => {
-      ensCache.set(address, name);
-      return name;
-    })
-    .catch(() => null);
-  return name;
-};
 
 main();
