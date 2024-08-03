@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - main
-      - next-app
-
+    paths:
+      - 'game/**'
 
 permissions:
   contents: read
