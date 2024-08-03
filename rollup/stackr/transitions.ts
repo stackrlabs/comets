@@ -1,7 +1,7 @@
 import { REQUIRE, STF, Transitions } from "@stackr/sdk/machine";
 import { hashMessage } from "ethers";
-import { ACTIONS, GameMode } from "../../client/game/gameMode";
-import { World } from "../../client/game/world";
+import { ACTIONS, GameMode } from "../../game/src/core/gameMode";
+import { World } from "../../game/src/core/world";
 import { AppState } from "./machine";
 
 export type StartGameInput = {

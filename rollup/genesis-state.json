@@ -3,78 +3,8 @@
     "games": [
       {
         "id": "0x6d220b2af3ddf405e228e83def838dfec21b8e03834723c9687eab26efc5460c",
-        "score": 12300,
+        "score": 0,
         "player": "0xea5eE3665C8E4289842FaC79DFB3FA0d129fc735"
-      },
-      {
-        "id": "0x76d0dbabfe810803768256d2936d42151d0c2aa8689896348626c25d697fb7db",
-        "score": 19000,
-        "player": "0xea5eE3665C8E4289842FaC79DFB3FA0d129fc735"
-      },
-      {
-        "id": "0x7cc5fa142ca6cc3b5015a7469ac52b9140e57887f60866d39930111756a55e87",
-        "score": 0,
-        "player": "0xc607B0B98ceC1FB6e6d3c72039bEbd76924aE4a4"
-      },
-      {
-        "id": "0x9723281952ec249412c6105cebb2376528a9c06023439ee163fe608ed4acba09",
-        "score": 12700,
-        "player": "0xc607B0B98ceC1FB6e6d3c72039bEbd76924aE4a4"
-      },
-      {
-        "id": "0x5bd5ad703723427cfb29ed588bb70b6bf70f32474c7e833637190a6585baeeb9",
-        "score": 0,
-        "player": "0xc607B0B98ceC1FB6e6d3c72039bEbd76924aE4a4"
-      },
-      {
-        "id": "0xac898b60757cd2f465ff978c2e0fd41e63a5f4fc977eef67f3f65bbb61619b45",
-        "score": 0,
-        "player": "0xc607B0B98ceC1FB6e6d3c72039bEbd76924aE4a4"
-      },
-      {
-        "id": "0x1ff2d75adf4be95c4bd827127c30924d945e8a354209b04de2217a73d15e417d",
-        "score": 76940,
-        "player": "0xc607B0B98ceC1FB6e6d3c72039bEbd76924aE4a4"
-      },
-      {
-        "id": "0xb3e989fef8ee7aaaebf399d788694759366724c40874fa046fbd8f707e82c697",
-        "score": 41130,
-        "player": "0xc607B0B98ceC1FB6e6d3c72039bEbd76924aE4a4"
-      },
-      {
-        "id": "0x357550192b1fbf93b963ff8c6a71cf522d279dd370a4c026e4aaef5dc51b668e",
-        "score": 0,
-        "player": "0xc607B0B98ceC1FB6e6d3c72039bEbd76924aE4a4"
-      },
-      {
-        "id": "0xf2564ceb6327915a13709289af8c4d5b5c7104cee2c72494b732068d8839964e",
-        "score": 41980,
-        "player": "0x5CDe9727B12E3FD211a9Ec961E2e2f5767CA81B3"
-      },
-      {
-        "id": "0x05efd499ec1720ed126b09322f575a54fa02535b0de22f7d8719b0a2de781488",
-        "score": 23800,
-        "player": "0xC2FdE45f9E0a77005493930f72819Fcf70210464"
-      },
-      {
-        "id": "0xfb7ed74217e7955100c3154598caf03ce6da7c8441e278027f1679b9d5749bc5",
-        "score": 19400,
-        "player": "0x372e2D6f74eFA2C5A4C72DAC4A31da09E8505995"
-      },
-      {
-        "id": "0x9cb51304cfdac6805aa3740c5bdcf1e5c027d1fce990fb93989305e18cd9817d",
-        "score": 14400,
-        "player": "0x372e2D6f74eFA2C5A4C72DAC4A31da09E8505995"
-      },
-      {
-        "id": "0x72c75565034b1aa146b45f0e2f46e4c53707b94766596ccb5a5aade4315e3a94",
-        "score": 7240,
-        "player": "0x372e2D6f74eFA2C5A4C72DAC4A31da09E8505995"
-      },
-      {
-        "id": "0xd679cbb4f8b671f7ad90f9ee7f936934095e36a33a39719e4bd732196b71bfe1",
-        "score": 4840,
-        "player": "0x372e2D6f74eFA2C5A4C72DAC4A31da09E8505995"
       }
     ]
   }
