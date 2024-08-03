@@ -129,7 +129,7 @@ export class GameMode extends EventSource implements IGameState {
 
   private renderStatic(screen: Screen) {
     screen.draw.background();
-    screen.draw.copyright();
+    screen.draw.gameTitle();
     screen.draw.stackr();
     screen.draw.scorePlayer1(this.world.score);
     screen.draw.drawExtraLives(this.world.lives);

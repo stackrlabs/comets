@@ -1,6 +1,6 @@
-import { Screen } from './screen';
-import { Collisions } from './collisions';
-import { World } from './world';
+import { Screen } from "./screen";
+import { Collisions } from "./collisions";
+import { World } from "./world";
 import { IGameState, VirtualInput } from "../comets";
 
 export class DemoMode implements IGameState {
@@ -78,7 +78,7 @@ export class DemoMode implements IGameState {
     screen.draw.oneCoinOnePlay();
     // screen.draw.highscore(this.world.highscore);
     screen.draw.stackr();
-    screen.draw.copyright();
+    screen.draw.gameTitle();
   }
 
   private drawPushStart(screen: Screen) {
