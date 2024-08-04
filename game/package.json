@@ -10,11 +10,16 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.51.21",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "hammerjs": "^2.0.8",
     "howler": "^2.2.4",
+    "lucide-react": "^0.424.0",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
+    "tailwind-merge": "^2.4.0",
+    "tailwindcss-animate": "^1.0.7",
     "viem": "^2.18.7",
     "wagmi": "^2.12.2"
   },

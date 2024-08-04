@@ -1,5 +1,6 @@
 import {
   ActionConfirmationStatus,
+  ActionExecutionStatus,
   ActionSchema,
   MicroRollup,
 } from "@stackr/sdk";
@@ -145,6 +146,61 @@ const main = async () => {
       console.error(error);
       return res.status(500).json({ isOk: false, error: error.message });
     }
+  });
+
+  const getUniquePlayers = (games: typeof stateMachine.state.games) => {
+    const players = new Set<string>();
+    for (const game of games) {
+      players.add(game.player);
+    }
+    return [...players];
+  };
+
+  app.get("/games", async (_req, res) => {
+    const actionsAndBlocks = await mru.actions.query(
+      {
+        name: "endGame",
+        executionStatus: ActionExecutionStatus.ACCEPTED,
+        confirmationStatus: [
+          ActionConfirmationStatus.C1,
+          ActionConfirmationStatus.C2,
+          ActionConfirmationStatus.C3A,
+          ActionConfirmationStatus.C3B,
+        ],
+        block: {
+          isReverted: false,
+        },
+      },
+      false
+    );
+
+    await Promise.all(
+      getUniquePlayers(stateMachine.state.games).map(async (player) =>
+        getAddressOrEns(player)
+      )
+    );
+
+    const games = actionsAndBlocks.map((actionAndBlock) => {
+      const { hash, block, payload } = actionAndBlock;
+      const { gameId, score } = payload;
+      const player = stateMachine.wrappedState.games[gameId].player;
+
+      return {
+        gameId,
+        score,
+        player: ensCache.get(player) || player,
+        hash,
+        blockInfo: block
+          ? {
+              status: block.status,
+              daMetadata: block.batchInfo?.daMetadata || null,
+              l1TxHash: block.batchInfo?.l1TransactionHash || null,
+            }
+          : null,
+      };
+    });
+
+    return res.send(games);
   });
 
   app.listen(PORT, () => {

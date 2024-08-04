@@ -20,7 +20,7 @@ export const ACTIONS = [
   "wasHyperspace",
 ];
 
-const WAIT_TIME = 5;
+const WAIT_TIME = 3;
 type Options = {
   gameId?: string;
   tickRecorder?: {

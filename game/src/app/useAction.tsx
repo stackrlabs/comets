@@ -1,3 +1,4 @@
+import { MRUInfo } from "@/lib/types";
 import { submitAction } from "@/rpc/api";
 import { getFromStore, StorageKey } from "@/rpc/storage";
 import { getAddress } from "viem";
@@ -11,7 +12,7 @@ export const useAction = () => {
     return { submit: () => Promise.resolve() };
   }
 
-  const mruInfo = getFromStore(StorageKey.MRU_INFO);
+  const mruInfo: MRUInfo = getFromStore(StorageKey.MRU_INFO);
   const { domain, schemas } = mruInfo;
   const msgSender = getAddress(address);
 

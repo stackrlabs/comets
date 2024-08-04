@@ -1,4 +1,5 @@
 "use client";
+import { PastGames } from "@/components/past-games/past-games";
 import { Button } from "@/components/button";
 import { Game } from "@/components/game";
 import { fetchLeaderboard, fetchMruInfo } from "@/rpc/api";
@@ -45,7 +46,7 @@ export default function Main() {
   const renderContinueButton = () => {
     const text = isConnecting ? "Connecting Wallet..." : "Connect Wallet";
     return (
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col justify-center w-fit">
         <Button isDisabled={isConnecting} onClick={connectWallet}>
           {text}
         </Button>
@@ -58,5 +59,13 @@ export default function Main() {
     return <div className="text-3xl w-full text-center">Loading Game...</div>;
   }
 
-  return <main>{isConnected ? <Game /> : renderContinueButton()}</main>;
+  return (
+    <main>
+      <div className="flex justify-center min-h-[70vh]">
+        {isConnected ? <Game /> : renderContinueButton()}
+      </div>
+      <br />
+      <PastGames />
+    </main>
+  );
 }

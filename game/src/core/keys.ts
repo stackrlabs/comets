@@ -29,6 +29,9 @@ export class KeyManager {
 
     window.onkeydown = (e) => {
       this.keys[e.keyCode] = true;
+      if (e.keyCode === Keys.FIRE && e.target === document.body) {
+        e.preventDefault();
+      }
     };
 
     window.onkeyup = (e) => {

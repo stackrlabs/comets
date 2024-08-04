@@ -3,9 +3,13 @@ import { IGameState } from "../comets";
 import { leaderboard } from "./leaderboard";
 import { Screen } from "./screen";
 
+export const formatHash = (hash: string) => {
+  return `${hash.slice(0, 6)}...${hash.slice(-4)}`;
+};
+
 export const formatAddress = (address: string) => {
   if (isAddress(address)) {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+    return formatHash(address);
   }
   // Is an ENS name then
   return address;
