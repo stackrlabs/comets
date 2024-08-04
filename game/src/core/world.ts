@@ -73,10 +73,6 @@ export class World {
   }
 
   update(dt: number, inputs: VirtualInput) {
-    if (this.slowMoTimer) {
-      dt = this.slowMoTimer.adjust(dt);
-    }
-
     if (this.dramaticPauseTimer > 0) {
       this.dramaticPauseTimer--;
       return;
@@ -97,10 +93,6 @@ export class World {
   }
 
   render(screen: Screen, dt: number) {
-    if (this.slowMoTimer) {
-      dt = this.slowMoTimer.adjust(dt);
-    }
-
     if (this.shakeTimer > 0) {
       screen.preShake();
     }
@@ -239,7 +231,6 @@ export class World {
       this.createExplosion(this.ship);
       this.addFlash(5);
       this.ship.destroy();
-      this.setSlowMo(0.25, 8);
     }
   }
 
