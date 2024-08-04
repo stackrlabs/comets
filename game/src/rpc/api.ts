@@ -8,8 +8,13 @@ const fetchMruInfo = async () => {
   addToStore(StorageKey.MRU_INFO, res);
 };
 
+const fetchAction = async () => {
+  const response = await fetch(`${API_URL}/actions`);
+  return response.json();
+};
+
 const fetchLeaderboard = async () => {
-  const response = await fetch(`${API_URL}/leaderboard`);
+  const response = await fetch(`${API_URL}/actions`);
   const res = await response.json();
   addToStore(StorageKey.LEADERBOARD, res);
 };
@@ -26,4 +31,4 @@ const submitAction = async (transition: string, payload: any) => {
   return response.json();
 };
 
-export { fetchLeaderboard, fetchMruInfo, submitAction };
+export { fetchAction, fetchLeaderboard, fetchMruInfo, submitAction };

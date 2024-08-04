@@ -1,5 +1,6 @@
 import {
   ActionConfirmationStatus,
+  ActionExecutionStatus,
   ActionSchema,
   MicroRollup,
 } from "@stackr/sdk";
@@ -145,6 +146,47 @@ const main = async () => {
       console.error(error);
       return res.status(500).json({ isOk: false, error: error.message });
     }
+  });
+
+  app.get("/actions", async (_req, res) => {
+    const actionsAndBlocks = await mru.actions.query(
+      {
+        executionStatus: ActionExecutionStatus.ACCEPTED,
+        confirmationStatus: [
+          ActionConfirmationStatus.C1,
+          ActionConfirmationStatus.C2,
+          ActionConfirmationStatus.C3A,
+          ActionConfirmationStatus.C3B,
+        ],
+        block: {
+          isReverted: false,
+        },
+      },
+      false
+    );
+
+    const actions = actionsAndBlocks.map((actionAndBlock) => {
+      const { name, payload, hash, block, logs } = actionAndBlock;
+
+      return {
+        name,
+        payload,
+        hash,
+        logs,
+        blockInfo: block
+          ? {
+              height: block.height,
+              hash: block.hash,
+              timestamp: block.timestamp,
+              status: block.status,
+              daMetadata: block.batchInfo?.daMetadata || null,
+              l1TxHash: block.batchInfo?.l1TransactionHash || null,
+            }
+          : null,
+      };
+    });
+
+    return res.send(actions);
   });
 
   app.listen(PORT, () => {
