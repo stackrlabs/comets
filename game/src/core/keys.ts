@@ -35,50 +35,53 @@ export class KeyManager {
       this.keys[e.keyCode] = false;
     };
 
-    // this.mc = new Hammer.Manager(stage);
+    const Hammer = require("hammerjs");
 
-    // const pan = new Hammer.Pan();
-    // const tap = new Hammer.Tap();
-    // const pinch = new Hammer.Pinch({
-    //   enable: true,
-    // });
+    this.mc = new Hammer.Manager(stage);
 
-    //   this.mc.add(pan);
-    //   this.mc.add(tap, {
-    //     interval: 50,
-    //   });
-    //   this.mc.add(pinch);
+    const pan = new Hammer.Pan();
+    const tap = new Hammer.Tap();
+    const pinch = new Hammer.Pinch({
+      enable: true,
+    });
 
-    //   this.mc.on("panup", () => {
-    //     this.thrust(true);
-    //   });
+    this.mc.add(pan);
+    this.mc.add(tap, {
+      interval: 50,
+    });
+    this.mc.add(pinch);
 
-    //   this.mc.on("panleft", () => {
-    //     this.rotateLeft(true);
-    //   });
+    this.mc.on("panup", () => {
+      this.thrust(true);
+    });
 
-    //   this.mc.on("panright", () => {
-    //     this.rotateRight(true);
-    //   });
+    this.mc.on("panleft", () => {
+      this.rotateLeft(true);
+    });
 
-    //   this.mc.on("panend", () => {
-    //     this.thrust(false);
-    //     this.rotateLeft(false);
-    //     this.rotateRight(false);
-    //   });
+    this.mc.on("panright", () => {
+      this.rotateRight(true);
+    });
 
-    //   this.mc.on("tap", () => {
-    //     this.fire(true);
-    //     this.touched = true;
-    //   });
+    this.mc.on("panend", () => {
+      this.thrust(false);
+      this.rotateLeft(false);
+      this.rotateRight(false);
+    });
 
-    //   this.mc.on("pinchout", () => {
-    //     this.hyperspace(true);
-    //   });
+    this.mc.on("tap", () => {
+      this.fire(true);
+      this.enter(true);
+      this.touched = true;
+    });
 
-    //   this.mc.on("pinchend", () => {
-    //     this.hyperspace(false);
-    //   });
+    this.mc.on("pinchout", () => {
+      this.hyperspace(true);
+    });
+
+    this.mc.on("pinchend", () => {
+      this.hyperspace(false);
+    });
   }
 
   update() {
@@ -166,6 +169,10 @@ export class KeyManager {
 
   private fire = (active: boolean) => {
     this.keys[Keys.FIRE] = active;
+  };
+
+  private enter = (active: boolean) => {
+    this.keys[Keys.START] = active;
   };
 
   private hyperspace = (active: boolean) => {
