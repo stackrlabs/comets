@@ -35,53 +35,57 @@ export class KeyManager {
       this.keys[e.keyCode] = false;
     };
 
-    const Hammer = require("hammerjs");
+    const isTouchDevice = "ontouchstart" in window;
+    if (isTouchDevice) {
+      console.log("Touch device detected");
+      const Hammer = require("hammerjs");
 
-    this.mc = new Hammer.Manager(stage);
+      this.mc = new Hammer.Manager(stage);
 
-    const pan = new Hammer.Pan();
-    const tap = new Hammer.Tap();
-    const pinch = new Hammer.Pinch({
-      enable: true,
-    });
+      const pan = new Hammer.Pan();
+      const tap = new Hammer.Tap();
+      const pinch = new Hammer.Pinch({
+        enable: true,
+      });
 
-    this.mc.add(pan);
-    this.mc.add(tap, {
-      interval: 50,
-    });
-    this.mc.add(pinch);
+      this.mc.add(pan);
+      this.mc.add(tap, {
+        interval: 50,
+      });
+      this.mc.add(pinch);
 
-    this.mc.on("panup", () => {
-      this.thrust(true);
-    });
+      this.mc.on("panup", () => {
+        this.thrust(true);
+      });
 
-    this.mc.on("panleft", () => {
-      this.rotateLeft(true);
-    });
+      this.mc.on("panleft", () => {
+        this.rotateLeft(true);
+      });
 
-    this.mc.on("panright", () => {
-      this.rotateRight(true);
-    });
+      this.mc.on("panright", () => {
+        this.rotateRight(true);
+      });
 
-    this.mc.on("panend", () => {
-      this.thrust(false);
-      this.rotateLeft(false);
-      this.rotateRight(false);
-    });
+      this.mc.on("panend", () => {
+        this.thrust(false);
+        this.rotateLeft(false);
+        this.rotateRight(false);
+      });
 
-    this.mc.on("tap", () => {
-      this.fire(true);
-      this.enter(true);
-      this.touched = true;
-    });
+      this.mc.on("tap", () => {
+        this.fire(true);
+        this.enter(true);
+        this.touched = true;
+      });
 
-    this.mc.on("pinchout", () => {
-      this.hyperspace(true);
-    });
+      this.mc.on("pinchout", () => {
+        this.hyperspace(true);
+      });
 
-    this.mc.on("pinchend", () => {
-      this.hyperspace(false);
-    });
+      this.mc.on("pinchend", () => {
+        this.hyperspace(false);
+      });
+    }
   }
 
   update() {

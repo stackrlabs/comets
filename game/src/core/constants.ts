@@ -1,7 +1,12 @@
 import { Rect } from "../comets";
+export let WIDTH = 960;
+export let HEIGHT = 720;
 
-export const WIDTH = 960;
-export const HEIGHT = 720;
+export const updateScreenDimensions = (width: number, height: number) => {
+  WIDTH = width;
+  HEIGHT = height;
+};
+
 export const OBJECT_SCALE = 0.75;
 export const OFF_RECT = 120 * OBJECT_SCALE;
 export const SHIP_RECT: Rect = {

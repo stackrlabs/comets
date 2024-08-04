@@ -42,10 +42,11 @@ export class Screen implements Rect {
     this.width2 = this.width / 2;
     this.height2 = this.height / 2;
 
-    this._fontXL = 48;
-    this._fontL = 24;
-    this._fontM = 18;
-    this._fontS = 10;
+    const factor = this.width < 800 ? 0.5 : 1;
+    this._fontXL = 48 * factor;
+    this._fontL = 24 * factor;
+    this._fontM = 18 * factor;
+    this._fontS = 10 * factor;
     this._objectScale = OBJECT_SCALE;
 
     this._pointSize = 4 * this._objectScale;

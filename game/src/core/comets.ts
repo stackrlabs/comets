@@ -45,6 +45,7 @@ export class Comets {
     this.gameMode.on("done", (_, world) => {
       Sound.off();
       this.gameEndHandler(world.score);
+      this.keyManager.clear();
     });
   };
 

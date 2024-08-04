@@ -378,7 +378,18 @@ export class Draw {
 
   signPrompt() {
     this.screen.draw.text3(
-      "You'll be prompted to sign Proof of Gameplay",
+      "You'll be prompted",
+      this.screen.font.large,
+      (width) => {
+        return {
+          x: this.screen.width2 - width / 2,
+          y: screen.height / 3.5,
+        };
+      }
+    );
+
+    this.screen.draw.text3(
+      `to sign "Proof of Gameplay"`,
       this.screen.font.large,
       (width) => {
         return {
