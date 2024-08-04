@@ -1,6 +1,5 @@
 "use client";
 
-import { buttonVariants } from "@/components/ui/button";
 import { DA, DA_POINTER_URL } from "@/lib/constants";
 import { DAMetadata } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -41,10 +40,7 @@ export default function ViewMetadata({ daMetadata }: ViewMetadataProps) {
         href={getExplorerUrl(daMetadata)}
         target="_blank"
         rel="noreferrer"
-        className={cn(
-          buttonVariants({ variant: "outline" }),
-          "flex w-[fit-content] gap-2 p-2 text-black"
-        )}
+        className={cn("flex w-[fit-content] gap-2 p-2")}
       >
         <DAImage da={daName} />
       </a>
