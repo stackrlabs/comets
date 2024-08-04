@@ -3,6 +3,7 @@ export enum StorageKey {
   GAME_ID = "game_id",
   LEADERBOARD = "leaderboard",
   LAST_SCORE = "lastScore",
+  SCREEN_DIMENSIONS = "screenDimensions",
 }
 
 export const addToStore = (key: StorageKey, value: any) => {

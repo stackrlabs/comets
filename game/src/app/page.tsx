@@ -18,9 +18,9 @@ export default function Main() {
     const setupGame = async () => {
       setLoading(true);
       await Promise.all([fetchMruInfo(), fetchLeaderboard()]);
+      setLoading(false);
       const connector = connectors[0];
       await connector.getProvider();
-      setLoading(false);
     };
     setupGame();
   }, [connectors]);
@@ -43,15 +43,18 @@ export default function Main() {
   };
 
   const renderContinueButton = () => {
+    const text = isConnecting ? "Connecting Wallet..." : "Connect Wallet";
     return (
       <div className="flex flex-col justify-center">
-        <Button onClick={connectWallet}>Connect Wallet</Button>
+        <Button isDisabled={isConnecting} onClick={connectWallet}>
+          {text}
+        </Button>
         <div className="text-center mt-4">To play game</div>
       </div>
     );
   };
 
-  if (isLoading || isConnecting) {
+  if (isLoading) {
     return <div className="text-3xl w-full text-center">Loading Game...</div>;
   }
 

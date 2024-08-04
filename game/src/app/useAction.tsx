@@ -8,7 +8,7 @@ export const useAction = () => {
   const { signTypedDataAsync } = useSignTypedData();
 
   if (!address) {
-    throw new Error("No address found");
+    return { submit: () => Promise.resolve() };
   }
 
   const mruInfo = getFromStore(StorageKey.MRU_INFO);

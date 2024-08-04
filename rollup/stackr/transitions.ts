@@ -6,6 +6,8 @@ import { AppState } from "./machine";
 
 export type StartGameInput = {
   timestamp: number;
+  width: number;
+  height: number;
 };
 
 export type EndGameInput = {
@@ -16,14 +18,19 @@ export type EndGameInput = {
 };
 
 const startGame: STF<AppState, StartGameInput> = {
-  handler: ({ state, msgSender, block, emit }) => {
+  handler: ({ state, inputs, msgSender, block, emit }) => {
+    const { width, height, timestamp } = inputs;
     const gameId = hashMessage(
-      `${msgSender}::${block.timestamp}::${Object.keys(state.games).length}`
+      `${msgSender}::${timestamp}::${block.timestamp}::${
+        Object.keys(state.games).length
+      }::${width}::${height}`
     );
 
     state.games[gameId] = {
       score: 0,
       player: String(msgSender),
+      height,
+      width,
     };
 
     emit({
@@ -44,7 +51,14 @@ const endGame: STF<AppState, EndGameInput> = {
     REQUIRE(games[gameId].player === String(msgSender), "UNAUTHORIZED");
     // rerun game loop
     const world = new World();
-    const gameMode = new GameMode(world, { gameId });
+    const gameMode = new GameMode(world, {
+      gameId,
+      screenDimensions: {
+        width: games[gameId].width,
+        height: games[gameId].height,
+      },
+    });
+
     const ticks = gameInputs
       .split(",")
       .map((tick) => Number(tick).toString(2).padStart(ACTIONS.length, "0"));

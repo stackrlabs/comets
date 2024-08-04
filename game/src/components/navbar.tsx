@@ -16,11 +16,11 @@ export const Navbar = () => {
   }, [chainId]);
 
   return (
-    <nav className="px-12 py-4">
+    <nav className="sm:px-2 lg:px-10 md:px-8 py-4 ">
       <div className="flex justify-between items-center">
-        <div className="text-2xl p-2 px-4 select-none">Comets</div>
+        <div className="text-2xl p-2 lg:px-4 select-none">Comets</div>
         {!!address && (
-          <div className="flex gap-4 text-center items-center">
+          <div className="flex flex-wrap gap-4 text-center items-center">
             <div>{formatAddress(address)}</div>
             <Button onClick={() => disconnect()}>Disconnect</Button>
           </div>

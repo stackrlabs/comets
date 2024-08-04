@@ -1,6 +1,6 @@
 import { IGameState, Rect, VirtualInput } from "../comets";
 import { Collisions } from "./collisions";
-import { HEIGHT, WIDTH } from "./constants";
+import { HEIGHT, updateScreenDimensions, WIDTH } from "./constants";
 import { EventSource } from "./events";
 import Global from "./global";
 import { Object2D } from "./object2d";
@@ -26,6 +26,7 @@ type Options = {
   tickRecorder?: {
     recordInputs: (ticks: VirtualInput) => void;
   };
+  screenDimensions?: { width: number; height: number };
 };
 export class GameMode extends EventSource implements IGameState {
   bounds: Object2D[] = [];
@@ -41,13 +42,20 @@ export class GameMode extends EventSource implements IGameState {
         recordInputs: () => {},
       },
       gameId: options?.gameId,
+      screenDimensions: { width: WIDTH, height: HEIGHT },
     };
 
-    if (options?.tickRecorder) {
-      this.options.tickRecorder = options.tickRecorder;
+    const { tickRecorder, gameId, screenDimensions } = options || {};
+
+    if (tickRecorder) {
+      this.options.tickRecorder = tickRecorder;
     }
-    if (this.options.gameId) {
-      updateSeed(this.options.gameId);
+    if (gameId) {
+      updateSeed(gameId);
+    }
+    if (screenDimensions) {
+      const { width, height } = screenDimensions;
+      updateScreenDimensions(width, height);
     }
   }
 
