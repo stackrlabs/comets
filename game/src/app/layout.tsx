@@ -7,6 +7,13 @@ import { Providers } from "./providers";
 export const metadata: Metadata = {
   title: "Comets",
   description: "Asteroids inspired on-chain game",
+  icons: [
+    {
+      rel: "icon",
+      type: "image/png",
+      url: "/icon.png",
+    },
+  ],
 };
 
 const Hyperspace = localFont({ src: "../assets/Hyperspace.otf" });

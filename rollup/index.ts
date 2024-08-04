@@ -148,9 +148,18 @@ const main = async () => {
     }
   });
 
-  app.get("/actions", async (_req, res) => {
+  const getUniquePlayers = (games: typeof stateMachine.state.games) => {
+    const players = new Set<string>();
+    for (const game of games) {
+      players.add(game.player);
+    }
+    return [...players];
+  };
+
+  app.get("/games", async (_req, res) => {
     const actionsAndBlocks = await mru.actions.query(
       {
+        name: "endGame",
         executionStatus: ActionExecutionStatus.ACCEPTED,
         confirmationStatus: [
           ActionConfirmationStatus.C1,
@@ -165,19 +174,24 @@ const main = async () => {
       false
     );
 
-    const actions = actionsAndBlocks.map((actionAndBlock) => {
-      const { name, payload, hash, block, logs } = actionAndBlock;
+    await Promise.all(
+      getUniquePlayers(stateMachine.state.games).map(async (player) =>
+        getAddressOrEns(player)
+      )
+    );
+
+    const games = actionsAndBlocks.map((actionAndBlock) => {
+      const { hash, block, payload } = actionAndBlock;
+      const { gameId, score } = payload;
+      const player = stateMachine.wrappedState.games[gameId].player;
 
       return {
-        name,
-        payload,
+        gameId,
+        score,
+        player: ensCache.get(player) || player,
         hash,
-        logs,
         blockInfo: block
           ? {
-              height: block.height,
-              hash: block.hash,
-              timestamp: block.timestamp,
               status: block.status,
               daMetadata: block.batchInfo?.daMetadata || null,
               l1TxHash: block.batchInfo?.l1TransactionHash || null,
@@ -186,7 +200,7 @@ const main = async () => {
       };
     });
 
-    return res.send(actions);
+    return res.send(games);
   });
 
   app.listen(PORT, () => {
