@@ -3,12 +3,12 @@ import { IGameState } from "../comets";
 import { leaderboard } from "./leaderboard";
 import { Screen } from "./screen";
 
-const formatAddress = (address: string) => {
+export const formatAddress = (address: string) => {
   if (isAddress(address)) {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   }
   // Is an ENS name then
-  return address.padEnd(14, " ");
+  return address;
 };
 
 export class HighScoreMode implements IGameState {
@@ -66,7 +66,7 @@ export class HighScoreMode implements IGameState {
     for (let i = 0; i < leaderboard.scores.length; i++) {
       const y = startY + i * spacing;
       const text = `${this.pad(i + 1, " ", 2)}.${this.pad(
-        formatAddress(leaderboard.scores[i].address),
+        formatAddress(leaderboard.scores[i].address.padEnd(14, " ")),
         " ",
         13
       )} ${this.pad("", " ", 2)} ${this.pad(

@@ -11,6 +11,7 @@ export const Keys = {
   THRUST: 38,
   THRUST_W: 87,
   FIRE: 32,
+  START: 13,
 };
 
 export class KeyManager {
@@ -22,7 +23,7 @@ export class KeyManager {
   constructor() {
     const stage = document.getElementById("game");
     if (!stage) {
-      console.log("Not found");
+      console.debug("Not found");
       return;
     }
 
@@ -110,7 +111,7 @@ export class KeyManager {
   }
 
   isEnterPressed() {
-    return this.keys[13];
+    return this.keys[Keys.START];
   }
 
   isRotateLeft() {

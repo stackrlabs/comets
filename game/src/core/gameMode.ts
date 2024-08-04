@@ -150,7 +150,7 @@ export class GameMode extends EventSource implements IGameState {
 
     // player 1
     if (!this.world.started) {
-      screen.draw.player1();
+      screen.draw.readyText();
     }
 
     if (this.world.gameOver) {

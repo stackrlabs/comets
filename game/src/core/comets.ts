@@ -1,8 +1,8 @@
 import { IGameState } from "../comets";
-import { getFromStore, removeFromStore, StorageKey } from "../rpc/storage";
-import { MainPage } from "./attractMode";
+import { getFromStore, StorageKey } from "../rpc/storage";
 import { GameMode } from "./gameMode";
 import { KeyManager } from "./keys";
+import { MainPage } from "./mainPage";
 import { Screen } from "./screen";
 import { Sound } from "./sounds";
 import { TickRecorder } from "./tickRecorder";
@@ -10,63 +10,61 @@ import { World } from "./world";
 
 export class Comets {
   private lastScore = 0;
-  private attractMode!: MainPage;
+  private mainPage!: MainPage;
   private gameMode!: GameMode;
   private currentMode!: IGameState;
   private tickRecorder!: TickRecorder;
   private screen!: Screen;
-  private isSendingTicks = false;
   private keyManager!: KeyManager;
+  private gameEndHandler: (score: number) => Promise<void>;
+  private handleStartGame: () => Promise<number | undefined>;
 
-  constructor() {
+  constructor(
+    keyManager: KeyManager,
+    tickRecorder: TickRecorder,
+    gameEndHandler: (score: number) => Promise<void>,
+    handleStartGame: () => Promise<number | undefined>
+  ) {
+    this.keyManager = keyManager;
+    this.tickRecorder = tickRecorder;
+    this.gameEndHandler = gameEndHandler;
+    this.handleStartGame = handleStartGame;
     this.init();
   }
 
-  init() {
-    this.keyManager = new KeyManager();
-    this.attractMode = new MainPage(this.keyManager, this.lastScore);
-    this.screen = new Screen();
-    this.currentMode = this.attractMode;
-    this.tickRecorder = new TickRecorder(this.keyManager);
-
-    const setGameMode = (gameId: string) => {
-      this.tickRecorder.reset();
-      this.gameMode = new GameMode(new World(), {
-        tickRecorder: this.tickRecorder,
-        gameId,
-      });
-
-      this.currentMode = this.gameMode;
-
-      this.gameMode.on("done", (source, world) => {
-        Sound.off();
-        // Send ticks in the form of an action to MRU
-        // And wait for C1 to confirm score
-        this.lastScore = world.score;
-        if (!this.isSendingTicks) {
-          this.isSendingTicks = true;
-          this.tickRecorder
-            .sendTicks(this.lastScore)
-            .then(() => {
-              console.log("Sent ticks");
-            })
-            .catch((e) => {
-              console.error("Error sending ticks", e.message);
-            })
-            .finally(() => {
-              removeFromStore(StorageKey.GAME_ID);
-              this.isSendingTicks = false;
-              console.log("Game over");
-              this.init();
-            });
-        }
-      });
-    };
-
-    this.attractMode.on("done", () => {
-      console.log("Start Game");
-      setGameMode(getFromStore(StorageKey.GAME_ID));
+  onStartGame = () => {
+    const gameId = getFromStore(StorageKey.GAME_ID);
+    this.tickRecorder.reset();
+    this.gameMode = new GameMode(new World(), {
+      tickRecorder: this.tickRecorder,
+      gameId,
     });
+
+    this.currentMode = this.gameMode;
+
+    this.gameMode.on("done", (_, world) => {
+      Sound.off();
+      this.gameEndHandler(world.score);
+    });
+  };
+
+  switchToMainPage() {
+    this.mainPage = new MainPage(
+      this.keyManager,
+      this.lastScore,
+      this.handleStartGame
+    );
+    this.mainPage.on("done", () => {
+      console.debug("Start Game");
+      this.onStartGame();
+    });
+
+    this.currentMode = this.mainPage;
+  }
+
+  init() {
+    this.screen = new Screen();
+    this.switchToMainPage();
   }
 
   update(dt: number) {

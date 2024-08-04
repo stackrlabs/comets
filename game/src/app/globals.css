@@ -17,8 +17,8 @@
 }
 
 @font-face {
-  font-family: 'Hyperspace';
-  src: url('../assets/Hyperspace.otf');
+  font-family: "Hyperspace";
+  src: url("../assets/Hyperspace.otf");
 }
 
 body {
@@ -29,10 +29,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #525252;
+  background-color: #000000;
+  color: white;
 }
-Ø
-#canvas {
+Ø #canvas {
   vertical-align: middle;
 }
 
