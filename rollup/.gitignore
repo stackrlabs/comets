@@ -6,3 +6,4 @@ stackr_build/
 dist/
 .DS_Store
 *.sqlite
+.vscode/*

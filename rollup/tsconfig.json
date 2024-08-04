@@ -27,6 +27,6 @@
     "stackr.config.ts",
     "genesis-state.json",
     "stackr/*.ts",
-    "*.ts"
+    "index.ts"
   ]
 }

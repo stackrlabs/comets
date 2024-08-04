@@ -1,6 +1,6 @@
 import { addToStore, StorageKey } from "./storage";
 
-const API_URL = "http://192.168.29.201:3210";
+const API_URL = "https://api.comets.stf.xyz";
 
 const fetchMruInfo = async () => {
   const response = await fetch(`${API_URL}/info`);

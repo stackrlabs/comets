@@ -7,6 +7,8 @@ import { transitions } from "./transitions";
 interface GameState {
   score: number;
   player: string;
+  height: number;
+  width: number;
 }
 
 interface RawState {
@@ -40,6 +42,8 @@ export class AppState extends State<RawState, WrappedState> {
           id,
           score: wrappedState.games[id].score,
           player: wrappedState.games[id].player,
+          height: wrappedState.games[id].height,
+          width: wrappedState.games[id].width,
         }));
         return { games };
       },
@@ -47,11 +51,12 @@ export class AppState extends State<RawState, WrappedState> {
   }
 
   getRootHash(): string {
-    const leaves = this.state.games.map(({ id, player, score }) =>
-      solidityPackedKeccak256(
-        ["string", "address", "uint256"],
-        [id, player, score]
-      )
+    const leaves = this.state.games.map(
+      ({ id, player, score, height, width }) =>
+        solidityPackedKeccak256(
+          ["string", "address", "uint256", "uint256", "uint256"],
+          [id, player, score, height, width]
+        )
     );
     if (leaves.length === 0) {
       return ZeroHash;
