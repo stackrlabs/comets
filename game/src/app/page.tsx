@@ -1,13 +1,13 @@
 "use client";
-import { PastGames } from "@/components/past-games/past-games";
 import { Button } from "@/components/button";
 import { Game } from "@/components/game";
+import { PastGames } from "@/components/past-games/past-games";
 import { fetchLeaderboard, fetchMruInfo } from "@/rpc/api";
 import { useEffect, useState } from "react";
 import { createWalletClient, custom } from "viem";
 import { addChain } from "viem/actions";
+import { sepolia } from "viem/chains";
 import { useAccount, useConnect } from "wagmi";
-import { stackrDevnet } from "./config";
 
 export default function Main() {
   const { isConnected, isConnecting } = useAccount();
@@ -32,12 +32,12 @@ export default function Main() {
     const walletClient = createWalletClient({
       transport: custom(window.ethereum),
     });
-    if (chainId !== stackrDevnet.id) {
+    if (chainId !== sepolia.id) {
       try {
-        await walletClient.switchChain({ id: stackrDevnet.id });
+        await walletClient.switchChain({ id: sepolia.id });
       } catch (e) {
         console.log(e);
-        await addChain(walletClient, { chain: stackrDevnet });
+        await addChain(walletClient, { chain: sepolia });
       }
     }
     connect({ connector });

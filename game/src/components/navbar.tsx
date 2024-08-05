@@ -1,7 +1,7 @@
 "use client";
-import { stackrDevnet } from "@/app/config";
 import { formatAddress } from "@/core/highScoreMode";
 import { useEffect } from "react";
+import { sepolia } from "viem/chains";
 import { useAccount, useDisconnect } from "wagmi";
 import { Button } from "./button";
 
@@ -10,7 +10,7 @@ export const Navbar = () => {
   const { disconnect } = useDisconnect();
 
   useEffect(() => {
-    if (chainId !== stackrDevnet.id) {
+    if (chainId !== sepolia.id) {
       disconnect();
     }
   }, [chainId]);
