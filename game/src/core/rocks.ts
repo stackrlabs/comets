@@ -186,12 +186,12 @@ export class Rock extends Object2D {
 
 export function createRocks(level: number): Rock[] {
   const rocks = [];
-  const count = Math.min(level + 1, 12);
+  const count = 1;
   const speed = 150;
   const offset = 20;
 
   for (let i = 0; i < count; i++) {
-    const zone = random(1, Math.pow(42, i)) % 4;
+    const zone = random(1, 4);
     const v = Vector.fromAngle(random(1, 360));
     let x: number;
     let y: number;
