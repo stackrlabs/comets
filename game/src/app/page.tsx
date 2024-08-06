@@ -3,15 +3,14 @@ import { Button } from "@/components/button";
 import { Game } from "@/components/game";
 import { PastGames } from "@/components/past-games/past-games";
 import { fetchLeaderboard, fetchMruInfo } from "@/rpc/api";
+import { usePrivy } from "@privy-io/react-auth";
 import { useEffect, useState } from "react";
-import { createWalletClient, custom } from "viem";
-import { addChain } from "viem/actions";
-import { sepolia } from "viem/chains";
 import { useAccount, useConnect } from "wagmi";
 
 export default function Main() {
-  const { isConnected, isConnecting } = useAccount();
-  const { connectors, connect } = useConnect();
+  const { isConnecting } = useAccount();
+  const { login, user, ready } = usePrivy();
+  const { connectors } = useConnect();
 
   const [isLoading, setLoading] = useState(true);
 
@@ -20,27 +19,12 @@ export default function Main() {
       setLoading(true);
       await Promise.all([fetchMruInfo(), fetchLeaderboard()]);
       setLoading(false);
-      const connector = connectors[0];
-      await connector.getProvider();
     };
     setupGame();
   }, [connectors]);
 
   const connectWallet = async () => {
-    const connector = connectors[0];
-    const chainId = await connector.getChainId();
-    const walletClient = createWalletClient({
-      transport: custom(window.ethereum),
-    });
-    if (chainId !== sepolia.id) {
-      try {
-        await walletClient.switchChain({ id: sepolia.id });
-      } catch (e) {
-        console.log(e);
-        await addChain(walletClient, { chain: sepolia });
-      }
-    }
-    connect({ connector });
+    login();
   };
 
   const renderContinueButton = () => {
@@ -55,14 +39,14 @@ export default function Main() {
     );
   };
 
-  if (isLoading) {
+  if (isLoading || !ready) {
     return <div className="text-3xl w-full text-center">Loading Game...</div>;
   }
 
   return (
     <main>
       <div className="flex justify-center min-h-[70vh]">
-        {isConnected ? <Game /> : renderContinueButton()}
+        {user ? <Game /> : renderContinueButton()}
       </div>
       <br />
       <PastGames />
