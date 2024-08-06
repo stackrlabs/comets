@@ -12,13 +12,14 @@ import {
   StorageKey,
 } from "@/rpc/storage";
 import { useEffect, useRef } from "react";
-import { mutate } from "swr";
+import { useSWRConfig } from "swr";
 import { PAST_GAME_KEY } from "./past-games/past-games";
 
 const NAV_WIDTH = 80;
 const LOOP_INTERVAL = 1000;
 export const Game = () => {
   const { submit } = useAction();
+  const { mutate } = useSWRConfig();
   const tickRecorder = useRef<TickRecorder>();
   const isStarting = useRef<boolean>(false);
   const isEnding = useRef<boolean>(false);
