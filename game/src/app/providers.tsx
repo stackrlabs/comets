@@ -18,7 +18,7 @@ export function Providers({ children }: Props) {
 
   return (
     <PrivyProvider
-      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
+      appId={"clzi470xo0389q83tluxsso6t"}
       config={{
         appearance: {
           theme: "dark",
