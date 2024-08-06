@@ -15,10 +15,10 @@ import { fetchGames } from "@/rpc/api";
 import useSWR from "swr";
 
 const tableHeads = ["Game ID", "Player", "Score", "L1 Stats"];
-
+export const PAST_GAME_KEY = "/games";
 export const PastGames = () => {
   const { data: games = [], isLoading } = useSWR<GameAction[]>(
-    "/games",
+    PAST_GAME_KEY,
     fetchGames
   );
 

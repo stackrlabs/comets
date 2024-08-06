@@ -12,6 +12,8 @@ import {
   StorageKey,
 } from "@/rpc/storage";
 import { useEffect, useRef } from "react";
+import { mutate } from "swr";
+import { PAST_GAME_KEY } from "./past-games/past-games";
 
 const NAV_WIDTH = 80;
 const LOOP_INTERVAL = 1000;
@@ -43,6 +45,7 @@ export const Game = () => {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       game.current?.switchToMainPage();
       isEnding.current = false;
+      mutate(PAST_GAME_KEY);
     }
   };
 
